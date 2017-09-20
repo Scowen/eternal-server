@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="assets/angular/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/angular/css/material-dashboard.css">
+        <link rel="stylesheet" type="text/css" href="assets/fonts/material-icons.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+
+        <script src="assets/angular/js/core/jquery-3.1.1.min.js"></script>
+        <script src="assets/angular/js/core/jquery-ui.min.js"></script>
+        <script src="assets/angular/js/core/bootstrap.min.js"></script>
+        <script src="assets/angular/js/core/material.min.js"></script>
+        <script src="assets/angular/js/core/jquery.perfect-scrollbar.min.js"></script>
+        <script src="assets/angular/js/core/jquery.validate.min.js"></script>
+        <script src="assets/angular/js/plugins/sweetalert2.min.js"></script>
+        <script src="assets/angular/js/core/material-dashboard-angular.js"></script>
+        <script src="assets/angular/js/plugins/jquery.tagsinput.js"></script>
+        <script src="assets/angular/js/plugins/jquery.sharrre.js"></script>
+        <script src="assets/angular/js/core/init.js"></script>
+        <script src="assets/angular/js/core/initMenu.js"></script>
+    </head>
+    <body>
+        <div class="row" id="loginform" style="display:none">
+            <div class="col-xs-12">
+                <div class="card card-login card-hidden">
+                    <div class="card-header text-center" data-background-color="red">
+                        <h4 class="card-title">Lost Roleplay</h4>
+                    </div>
+                    <div class="card-content">
+                        <br />
+                        <div class="alert alert-danger" style="display: none" id="loginform-result"></div>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">face</i>
+                            </span>
+                            <div class="form-group label-floating">
+                                <label class="control-label">Username / Email</label>
+                                <div class="form-group field-loginform-username required has-success">
+                                    <input type="text" id="loginform-username" class="form-control" aria-required="true" aria-invalid="false">
+                                    <p class="help-block help-block-error"></p>
+                                    <span class="material-input"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">lock_outline</i>
+                            </span>
+                            <div class="form-group label-floating">
+                                <label class="control-label">Password</label>
+                                <div class="form-group field-loginform-password required has-success">
+                                    <input type="password" id="loginform-password" class="form-control" aria-required="true" aria-invalid="false">
+                                    <p class="help-block help-block-error"></p>
+                                    <span class="material-input"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer text-center">
+                        <a href="#" id="loginform-submit" class="btn btn-rose btn-simple btn-wd btn-lg">Sign In<div class="ripple-container"></div></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Magic happens here -->
+        <script type="text/javascript" src="index.js"></script>
+    </body>
+</html>
