@@ -1,14 +1,20 @@
 var activeForm = "loginform";
-var loginSubmitDisabled = false;
 var cursor = true;
+
+var loginSubmitDisabled = false;
 mp.invoke('focus', true);
 
 function login() {
     if (loginSubmitDisabled) return;
 
-    var username = $("#loginform-username").val();
-    var password = $("#loginform-password").val();
-    $("#loginform-submit").text("Signing In...").addClass("disabled");
+    let username = $("#loginform-username").val();
+    let password = $("#loginform-password").val();
+
+    if (username.length < 3 || password.length < 5)
+        return;
+
+    $("#loginform-submit").text("Signing In...");
+    $(".disable-after-submit").addClass("disabled");
     mp.trigger('cefData', 'login', username, password);
 
     loginSubmitDisabled = true;
@@ -17,19 +23,25 @@ function login() {
 function loginResult(result, reason) {
     if (result === false) {
         $("#loginform-result").text(reason).slideDown();
-        $("#loginform-submit").text("Sign In").removeClass("disabled");
     } else { 
-        charSelectCamera();
+        activeForm = null;
+        $("#loginform").fadeOut(400);
     }
+    $("#loginform-submit").text("Sign In");
+    $(".disable-after-submit").removeClass("disabled");
     loginSubmitDisabled = false;
-}
-
-function charSelectCamera() {
-
 }
 
 $("#loginform-username, #loginform-password").keyup( function () {
     $("#loginform-result").slideUp();
+
+    let userString = $("#loginform-username").val();
+    let passString = $("#loginform-password").val();
+
+    if (userString.length >= 3 && passString.length >= 5)
+        $("#loginform-submit").removeClass("btn-simple");
+    else
+        $("#loginform-submit").addClass("btn-simple");
 })
 
 $("#loginform-submit").click( function() {

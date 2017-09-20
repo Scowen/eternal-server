@@ -1,10 +1,15 @@
 mp.events.addCommand('pos', (player) => {
-    console.log(player.position, player.rotation);
-    player.outputChatBox(`${player.position.x}, ${player.position.y}, ${player.position.z}`);
+    console.log(player.position, player.heading);
+    player.outputChatBox(`${player.position.x}, ${player.position.y}, ${player.position.z} | ${player.heading}`);
 });
 
+mp.events.addCommand('invis', (player, _, value) => {
+    player.alpha = (player.alpha == 0) ? 255 : 0;
+});
 
-
+mp.events.addCommand('ipl', (player, _, value) => {
+    player.call('IPL', value);
+});
 
 mp.events.addCommand('dim', (player, _, value) => {
     player.dimension = value;
@@ -12,7 +17,7 @@ mp.events.addCommand('dim', (player, _, value) => {
 
 mp.events.addCommand('veh', (player, _, vehName) => {
     let vehicle = mp.vehicles.new(mp.joaat(vehName), player.position);
-    player.putIntoVehicle(vehicle, 0);
+    // player.putIntoVehicle(vehicle, 0);
 });
 
 mp.events.addCommand('skin', (player, _, skinName) => {

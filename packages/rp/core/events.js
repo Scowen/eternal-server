@@ -3,6 +3,8 @@ mp.events.add('playerJoin', (player) => {
     player.position = {x: -1324.206298828125, y: -1483.844970703125, z: 6.898984432220459};
     player.alpha = 0;
     player.dimension = 1337;
+
+    player.call("IPL", "apa_v_mp_h_05_b");
 });
 
 mp.events.add('playerQuit', (player) => {

@@ -20,15 +20,11 @@
         <script src="assets/angular/js/core/initMenu.js"></script>
     </head>
     <body>
-        <div class="row" id="loginform" style="display:none">
+        <div class="row" id="loginform" style="display: none">
             <div class="col-xs-12">
-                <div class="card card-login card-hidden">
-                    <div class="card-header text-center" data-background-color="red">
-                        <h4 class="card-title">Lost Roleplay</h4>
-                    </div>
+                <div class="card card-hidden">
                     <div class="card-content">
                         <br />
-                        <div class="alert alert-danger" style="display: none" id="loginform-result"></div>
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <i class="material-icons">face</i>
@@ -36,7 +32,7 @@
                             <div class="form-group label-floating">
                                 <label class="control-label">Username / Email</label>
                                 <div class="form-group field-loginform-username required has-success">
-                                    <input type="text" id="loginform-username" class="form-control" aria-required="true" aria-invalid="false">
+                                    <input type="text" id="loginform-username" autofocus="autofocus" class="form-control disable-after-submit" aria-required="true" aria-invalid="false">
                                     <p class="help-block help-block-error"></p>
                                     <span class="material-input"></span>
                                 </div>
@@ -49,20 +45,47 @@
                             <div class="form-group label-floating">
                                 <label class="control-label">Password</label>
                                 <div class="form-group field-loginform-password required has-success">
-                                    <input type="password" id="loginform-password" class="form-control" aria-required="true" aria-invalid="false">
+                                    <input type="password" id="loginform-password" class="form-control disable-after-submit" aria-required="true" aria-invalid="false">
                                     <p class="help-block help-block-error"></p>
                                     <span class="material-input"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="alert alert-danger text-center" style="display: none" id="loginform-result"></div>
                     <div class="footer text-center">
-                        <a href="#" id="loginform-submit" class="btn btn-rose btn-simple btn-wd btn-lg">Sign In<div class="ripple-container"></div></a>
+                        <a href="#" id="loginform-submit" class="btn btn-jade btn-simple btn-wd btn-lg disable-after-submit">Sign In<div class="ripple-container"></div></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="charselect" style="display: none; padding-top: 20px; padding-left: 20px">
+            <div class="col-xs-4">
+                <div class="card card-hidden">
+                    <div class="card-header text-center" data-background-color="green">
+                        <h4 class="card-title">My Characters</h4>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Money</th>
+                            <th>Play Time</th>
+                            <th>&nbsp;</th>
+                        </thead>
+                        <tbody id="tbody-characters">
+                            
+                        </tbody>
+                    </table>
+                    <div class="footer text-center">
+                        <a href="#" id="charselect-submit" class="btn btn-jade btn-simple btn-wd btn-lg disabled">Enter Los Santos<div class="ripple-container"></div></a>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Magic happens here -->
-        <script type="text/javascript" src="index.js"></script>
+        <script type="text/javascript" src="auth.js"></script>
+        <script type="text/javascript" src="charSelect.js"></script>
     </body>
 </html>
