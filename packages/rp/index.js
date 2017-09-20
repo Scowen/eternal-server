@@ -8,7 +8,10 @@ global.connection = mysql.createConnection({
 });
 
 connection.connect(function(err) {
-    console.log("[Info]", "MySql has connected.");
+    if (err)
+        console.log("[Error]", err);
+    else
+        console.log("[Info]", "MySql has connected.");
 });
 ////////////////////////////////////////////////////////////////////////
 
