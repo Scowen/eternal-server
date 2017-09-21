@@ -40,6 +40,11 @@ mp.events.add("charSelect", (chars) => {
     menu.execute(`loadCharacters(${chars})`);
 });
 
+mp.events.add("characterSelectedResult", (result, reason) => {
+    if (!menu) return;
+    menu.execute(`characterSelectedResult(${result}, "${reason}")`);
+});
+
 mp.events.add("IPL", (value) => {
     mp.game.streaming.requestIpl(value);
 });

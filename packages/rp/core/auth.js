@@ -34,19 +34,22 @@ mp.events.add('clientData', function(player, argumentsJson) {
 
         connection.query("SELECT * FROM character WHERE id = ? ", [charId], function(err, result) {
             if (result && result != null && result != "undefined" && result.length > 0) {
-                if (result.account == player.account.id) {
-                    if (result.active == 1) {
+                player.character = result[0];
+                if (player.character.account == player.account.id) {
+                    if (player.character.active == 1) {
                         console.log("[Success]", `Char select from: ${player.account.name}`);
-
+                        player.call('characterSelectedResult', true, "Success");
                     } else {
                         console.log("[Failed]", `Char select from: ${player.account.name} (Not active)`);
+                        player.call('characterSelectedResult', false, "Character no longer active");
                     }
                 } else {
                     console.log("[Failed]", `Char select from: ${player.account.name} (Account mismatch)`);
+                    player.call('characterSelectedResult', false, "Character account mismatch");
                 }
             } else {
                 console.log("[Failed]", `Char select from: ${player.account.name} (Doesn't exist)`);
-
+                player.call('characterSelectedResult', false, "Character doesn't exist");
             }
 
         });

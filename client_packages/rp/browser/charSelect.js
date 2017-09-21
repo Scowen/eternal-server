@@ -1,4 +1,5 @@
 var selectedCharacter = null;
+var characterSubmitDisabled = false;
 
 function loadCharacters(charString) {
     $("#charselect").fadeIn(400);
@@ -25,14 +26,28 @@ function loadCharacters(charString) {
 
         $(".select-character").addClass("btn-simple").text("Select");
         $(this).removeClass("btn-simple").text("selected");
+        $("#charselect-result").slideUp();
+
 
         $("#charselect-submit").removeClass("btn-simple").removeClass("disabled");
     });
 
     $("#charselect-submit").click( function() {
-        if (selectedCharacter == null || selectedCharacter == undefined)
+        if (selectedCharacter == null || selectedCharacter == "undefined" || characterSubmitDisabled)
             return;
+
+        $("#charselect-submit").text("Entering Los Santos").addClass("disabled");
 
         mp.trigger('cefData', 'character', selectedCharacter);
     })
+}
+
+function characterSelectedResult(result, reason) {
+    if (result === false) {
+        $("#charselect-result").text(reason).slideDown();
+    } else { 
+        $("#charselect").fadeOut(400);
+    }
+    $("#charselect-submit").text("Enter Los Santos").removeClass("disabled");
+    characterSubmitDisabled = false;
 }
