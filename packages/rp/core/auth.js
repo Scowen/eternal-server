@@ -1,25 +1,55 @@
 mp.events.add('clientData', function(player, argumentsJson) {
     let args = JSON.parse(argumentsJson);
 
-    if (args[0] != "login")
-        return;
+    if (args[0] == "login") {
+        console.log("[Info]", `Login request from: ${args[1]}`);
 
-    console.log("[Info]", `Login request from: ${args[1]}`);
+        connection.query("SELECT * FROM account WHERE name = ? AND password = ? ", [args[1], args[2]], function(err, result) {
+            if (result && result != null && result != "undefined" && result.length > 0) {
+                console.log("[Success]", `Login request from: ${args[1]}`);
 
-    connection.query("SELECT * FROM account WHERE name = ? AND password = ? ", [args[1], args[2]], function(err, result) {
-        if (result && result != null && result != "undefined" && result.length > 0) {
-            console.log("[Info]", `Successful login request from: ${args[1]}`);
+                if ((result.banned < 0 || moment.unix() > result.banned) && result.banned != 0) {
+                    player.account = new Account(result[0]);
+                    player.call('loginResult', true, "Success!");
 
-            player.account = new Account(result[0]);
-            player.call('loginResult', true, "Success!");
+                    charSelect(player);
+                } else {
+                    console.log("[Failed]", `Login request from: ${args[1]} (Banned)`);
+                    player.account = null;
+                    player.call('loginResult', false, "You are banned");
+                }
+            } else {
+                console.log("[Failed]", `Login request from: ${args[1]} (Invalid username/password`);
+                player.account = null;
+                player.call('loginResult', false, "Incorrect Username / Password");
+            }
+        });
+    }
 
-            charSelect(player);
-        } else {
-            console.log("[Info]", `Failed login request from: ${args[1]}`);
-            player.account = null;
-            player.call('loginResult', false, "Incorrect Username / Password");
-        }
-    });
+    if (args[0] == "character") {
+        let charId = args[1];
+
+        if (isNaN(charId))
+            return;
+        
+        console.log("[Info]", `Char select from: ${player.account.name}`);
+
+        connection.query("SELECT * FROM character WHERE id = ? ", [charId], function(err, result) {
+            if (result && result != null && result != "undefined" && result.length > 0) {
+                if (result.account == player.account.id) {
+                    console.log("[Success]", `Char select from: ${player.account.name}`);
+                    
+                } else {
+                    console.log("[Failed]", `Char select from: ${player.account.name} (Account mismatch)`);
+
+                }
+            } else {
+                console.log("[Failed]", `Char select from: ${player.account.name} (Doesn't exists)`);
+
+            }
+
+        });
+    }
 });
 
 function charSelect(player) {

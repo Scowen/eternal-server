@@ -15,6 +15,8 @@ connection.connect(function(err) {
 });
 ////////////////////////////////////////////////////////////////////////
 
+global.moment = require('moment');
+
 // Core Components.
 require('./core/events.js');
 require('./core/commands.js');

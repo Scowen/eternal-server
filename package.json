@@ -6,6 +6,7 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "mysql2": "*"
+    "mysql2": "*",
+    "moment": "*"
   }
 }

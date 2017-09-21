@@ -29,5 +29,12 @@ function loadCharacters(charString) {
         $(this).removeClass("btn-simple").text("selected");
 
         $("#charselect-submit").removeClass("btn-simple").removeClass("disabled");
+    });
+
+    $("#charselect-submit").click( function() {
+        if (selectedCharacter == null || selectedCharacter == undefined)
+            return;
+
+        mp.trigger('cefData', 'character', selectedCharacter);
     })
 }
