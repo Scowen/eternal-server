@@ -64,7 +64,7 @@ function showUI() {
 function loginScenario() {
     hideUI();
 
-    dynCam = mp.cameras.new('default', new mp.Vector3(-1430.06591796875, -1389.8353271484375, 15.744191646575928), new mp.Vector3(0,0,270), 50);
+    dynCam = mp.cameras.new('default', new mp.Vector3(-1430.06591796875, -1389.8353271484375, 15.744191646575928), new mp.Vector3(5,0,270), 50);
     dynCam.pointAtCoord({x: -1324.206298828125, y: -1483.844970703125, z: 6.898984432220459});
     dynCam.setActive(true);
     mp.game.cam.renderScriptCams(true, false, 0, true, false);

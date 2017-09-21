@@ -20,8 +20,9 @@
         <script src="assets/angular/js/core/initMenu.js"></script>
     </head>
     <body>
-        <div class="row" id="loginform" style="display: none">
-            <div class="col-xs-12">
+        <div class="row" id="loginform" style="display: block">
+            <div class="col-xs-12 text-center">
+                <img src="assets/images/largelogo.png">
                 <div class="card card-hidden">
                     <div class="card-content">
                         <br />
@@ -32,7 +33,7 @@
                             <div class="form-group label-floating">
                                 <label class="control-label">Username / Email</label>
                                 <div class="form-group field-loginform-username required has-success">
-                                    <input type="text" id="loginform-username" autofocus="autofocus" class="form-control disable-after-submit" aria-required="true" aria-invalid="false">
+                                    <input type="text" id="loginform-username" autofocus="autofocus" class="form-control disable-after-submit" min="3" required="true" aria-required="true" aria-invalid="false">
                                     <p class="help-block help-block-error"></p>
                                     <span class="material-input"></span>
                                 </div>
@@ -45,7 +46,7 @@
                             <div class="form-group label-floating">
                                 <label class="control-label">Password</label>
                                 <div class="form-group field-loginform-password required has-success">
-                                    <input type="password" id="loginform-password" class="form-control disable-after-submit" aria-required="true" aria-invalid="false">
+                                    <input type="password" id="loginform-password" class="form-control disable-after-submit" min="5" required="true" aria-required="true" aria-invalid="false">
                                     <p class="help-block help-block-error"></p>
                                     <span class="material-input"></span>
                                 </div>
@@ -71,7 +72,6 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Money</th>
-                            <th>Play Time</th>
                             <th>&nbsp;</th>
                         </thead>
                         <tbody id="tbody-characters">

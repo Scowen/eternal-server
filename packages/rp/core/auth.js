@@ -6,17 +6,15 @@ mp.events.add('clientData', function(player, argumentsJson) {
 
         connection.query("SELECT * FROM account WHERE name = ? AND password = ? ", [args[1], args[2]], function(err, result) {
             if (result && result != null && result != "undefined" && result.length > 0) {
-                console.log("[Success]", `Login request from: ${args[1]}`);
-
-                if ((result.banned < 0 || moment.unix() > result.banned) && result.banned != 0) {
-                    player.account = new Account(result[0]);
+                player.account = new Account(result[0]);
+                if (parseInt(player.account.active) == 1) {
+                    console.log("[Success]", `Login request from: ${args[1]}`);
                     player.call('loginResult', true, "Success!");
-
                     charSelect(player);
                 } else {
-                    console.log("[Failed]", `Login request from: ${args[1]} (Banned)`);
+                    console.log("[Failed]", `Login request from: ${args[1]} (Not Active)`);
                     player.account = null;
-                    player.call('loginResult', false, "You are banned");
+                    player.call('loginResult', false, "Your account is not active");
                 }
             } else {
                 console.log("[Failed]", `Login request from: ${args[1]} (Invalid username/password`);
@@ -37,14 +35,17 @@ mp.events.add('clientData', function(player, argumentsJson) {
         connection.query("SELECT * FROM character WHERE id = ? ", [charId], function(err, result) {
             if (result && result != null && result != "undefined" && result.length > 0) {
                 if (result.account == player.account.id) {
-                    console.log("[Success]", `Char select from: ${player.account.name}`);
-                    
+                    if (result.active == 1) {
+                        console.log("[Success]", `Char select from: ${player.account.name}`);
+
+                    } else {
+                        console.log("[Failed]", `Char select from: ${player.account.name} (Not active)`);
+                    }
                 } else {
                     console.log("[Failed]", `Char select from: ${player.account.name} (Account mismatch)`);
-
                 }
             } else {
-                console.log("[Failed]", `Char select from: ${player.account.name} (Doesn't exists)`);
+                console.log("[Failed]", `Char select from: ${player.account.name} (Doesn't exist)`);
 
             }
 

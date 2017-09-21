@@ -27,6 +27,7 @@ function Character(results) {
     this.faction_points = results.faction_points;
     this.dead = results.dead;
     this.limbo = results.limbo;
+    this.active = results.active;
     this.phone_no = results.phone_no;
     this.experience = results.experience;
     this.salary = results.salary;

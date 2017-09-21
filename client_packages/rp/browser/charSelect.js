@@ -3,9 +3,8 @@ var selectedCharacter = null;
 function loadCharacters(charString) {
     $("#charselect").fadeIn(400);
 
-    var charString = JSON.stringify({1: {name: "Luke_Lost"}, 2: {name: "John_Doe"}});
-    let chars = JSON.parse(charString);
-        console.log(chars);
+    // var charString = JSON.stringify({1: {name: "Luke_Lost"}, 2: {name: "John_Doe"}});
+    let chars = charString;
 
     var tbody = $("#tbody-characters");
 
@@ -15,7 +14,6 @@ function loadCharacters(charString) {
             `<td>${char.identifier}</td>` +
             `<td>${char.name}</td>` + 
             "<td>$" + char.money + "</td>" + 
-            `<td>${char.play_time}</td>` +
             `<td><a href="#" class="btn btn-simple btn-primary select-character" style="cursor:pointer" data-id="${char.identifier}">Select<div class="ripple-container"></div></a></td>` +
             "</tr>";
 
