@@ -32,11 +32,15 @@ mp.events.add('clientData', function(player, argumentsJson) {
         
         console.log("[Info]", `Char select from: ${player.account.name}`);
 
-        connection.query("SELECT * FROM character WHERE id = ? ", [charId], function(err, result) {
+        connection.query("SELECT * FROM characters WHERE id = ? ", [charId], function(err, result) {
             if (result && result != null && result != "undefined" && result.length > 0) {
                 player.character = result[0];
                 if (player.character.account == player.account.id) {
                     if (player.character.active == 1) {
+                        player.position = {x:-391.3216, y:4363.728, z:58.65862};
+                        player.alpha = 255;
+                        player.dimension = 0;
+
                         console.log("[Success]", `Char select from: ${player.account.name}`);
                         player.call('characterSelectedResult', true, "Success");
                     } else {
@@ -62,23 +66,11 @@ function charSelect(player) {
     player.heading = 90;
     player.alpha = 255;
 
-    var chars = JSON.stringify({
-        1: {
-            id: 1,
-            identifier: "41513",
-            name: "Luke Lost",
-            money: 121345,
-            last_played: 1505938456,
-            play_time: 84584,
-        }, 
-        2: {
-            id: 2,
-            identifier: "05424",
-            name: "John Doe",
-            money: 63454,
-            last_played: 1505928456,
-            play_time: 54584,
+    connection.query("SELECT identifier, name, bank_money + hand_money as money FROM characters WHERE account = ? ", [player.account.id], function(err, result) {
+        if (result && result != null && result != "undefined" && result.length > 0) {
+            var chars = JSON.stringify(result);
+            console.log(chars);
+            player.call('charSelect', chars);
         }
     });
-    player.call('charSelect', chars);
 }

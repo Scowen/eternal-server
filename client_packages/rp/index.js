@@ -43,6 +43,11 @@ mp.events.add("charSelect", (chars) => {
 mp.events.add("characterSelectedResult", (result, reason) => {
     if (!menu) return;
     menu.execute(`characterSelectedResult(${result}, "${reason}")`);
+
+    if (result) {
+        showUI();
+        resetCamera();
+    }
 });
 
 mp.events.add("IPL", (value) => {
