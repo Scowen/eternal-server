@@ -15,7 +15,7 @@ function loadCharacters(charString) {
             `<td>${char.identifier}</td>` +
             `<td>${char.name}</td>` + 
             "<td>$" + char.money + "</td>" + 
-            `<td><a href="#" class="btn btn-simple btn-primary select-character" style="cursor:pointer" data-id="${char.identifier}">Select<div class="ripple-container"></div></a></td>` +
+            `<td><a href="#" class="btn btn-simple btn-info select-character" style="cursor:pointer" data-id="${char.identifier}">Select<div class="ripple-container"></div></a></td>` +
             "</tr>";
 
         $(tbody).append(string);
@@ -51,3 +51,9 @@ function characterSelectedResult(result, reason) {
     $("#charselect-submit").text("Enter Los Santos").removeClass("disabled");
     characterSubmitDisabled = false;
 }
+
+$("#charselect-charcreate").click( function() {
+    $("#charselect").fadeOut(400, function() {
+        $("#charcreate").fadeIn();
+    });
+})

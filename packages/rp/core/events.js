@@ -9,6 +9,16 @@ mp.events.add('playerJoin', (player) => {
 
 mp.events.add('playerQuit', (player) => {
     console.log("[Info]", "Quit", player.name, player.ip);
+
+    if (player.character != null) {
+        player.character.dimension = player.dimension;
+        player.character.position = player.position;
+        player.character.heading = player.heading;
+        player.character.health = player.health;
+        player.character.armour = player.armour;
+        // player.character.weapons = player.weapons;
+        player.last_played = moment.unix();
+    }
 });
 
 mp.events.add('playerDeath', (player) => {

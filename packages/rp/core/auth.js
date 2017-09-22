@@ -32,14 +32,25 @@ mp.events.add('clientData', function(player, argumentsJson) {
         
         console.log("[Info]", `Char select from: ${player.account.name}`);
 
-        connection.query("SELECT * FROM characters WHERE id = ? ", [charId], function(err, result) {
+        connection.query("SELECT * FROM characters WHERE identifier = ? ", [charId], function(err, result) {
             if (result && result != null && result != "undefined" && result.length > 0) {
-                player.character = result[0];
+                player.character = new Character(result[0]);
                 if (player.character.account == player.account.id) {
                     if (player.character.active == 1) {
-                        player.position = {x:-391.3216, y:4363.728, z:58.65862};
+                        if (player.character.position == "undefined" || player.character.position == null) {
+                            player.character.position = { x: -1035.0762939453125, y: -2732.98095703125, z: 13.75663948059082 };
+                            player.character.heading = 328;
+                            player.character.dimension = 0;
+                            player.character.save(player);
+                        }
+
+                        player.position = player.character.position;
+                        player.heading = player.character.heading;
+                        player.health = player.character.health;
+                        player.armour = player.character.armour;
+                        player.model = player.character.model;
+                        player.dimension = player.character.dimension;
                         player.alpha = 255;
-                        player.dimension = 0;
 
                         console.log("[Success]", `Char select from: ${player.account.name}`);
                         player.call('characterSelectedResult', true, "Success");
@@ -69,7 +80,6 @@ function charSelect(player) {
     connection.query("SELECT identifier, name, bank_money + hand_money as money FROM characters WHERE account = ? ", [player.account.id], function(err, result) {
         if (result && result != null && result != "undefined" && result.length > 0) {
             var chars = JSON.stringify(result);
-            console.log(chars);
             player.call('charSelect', chars);
         }
     });

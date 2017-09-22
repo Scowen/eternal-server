@@ -18,9 +18,9 @@
         <script src="assets/angular/js/plugins/jquery.sharrre.js"></script>
         <script src="assets/angular/js/core/init.js"></script>
         <script src="assets/angular/js/core/initMenu.js"></script>
-    </head>
+/    </head>
     <body>
-        <div class="row" id="loginform" style="display: block">
+        <div class="row" id="loginform" style="display: none">
             <div class="col-xs-12 text-center">
                 <img src="assets/images/largelogo.png">
                 <div class="card card-hidden">
@@ -33,7 +33,7 @@
                             <div class="form-group label-floating">
                                 <label class="control-label">Username / Email</label>
                                 <div class="form-group field-loginform-username required has-success">
-                                    <input type="text" id="loginform-username" autofocus="autofocus" class="form-control disable-after-submit" min="3" required="true" aria-required="true" aria-invalid="false">
+                                    <input value="" type="text" id="loginform-username" autofocus="autofocus" class="form-control disable-after-submit" min="3" required="true" aria-required="true" aria-invalid="false">
                                     <p class="help-block help-block-error"></p>
                                     <span class="material-input"></span>
                                 </div>
@@ -46,7 +46,7 @@
                             <div class="form-group label-floating">
                                 <label class="control-label">Password</label>
                                 <div class="form-group field-loginform-password required has-success">
-                                    <input type="password" id="loginform-password" class="form-control disable-after-submit" min="5" required="true" aria-required="true" aria-invalid="false">
+                                    <input value="" type="password" id="loginform-password" class="form-control disable-after-submit" min="5" required="true" aria-required="true" aria-invalid="false">
                                     <p class="help-block help-block-error"></p>
                                     <span class="material-input"></span>
                                 </div>
@@ -64,8 +64,17 @@
         <div class="row" id="charselect" style="display: none; padding-top: 20px; padding-left: 20px">
             <div class="col-xs-4">
                 <div class="card card-hidden">
-                    <div class="card-header text-center" data-background-color="green">
-                        <h4 class="card-title">My Characters</h4>
+                    <div class="card-header card-header-tabs" data-background-color="blue">
+                        <div class="nav-tabs-navigation">
+                            <div class="nav-tabs-wrapper">
+                                <h4 class="nav-tabs-title" style="padding: 0px;">My Characters</h4>
+                                <ul class="nav nav-tabs" data-tabs="tabs">
+                                    <li class="pull-right">
+                                        <a href="#" id="charselect-charcreate"><i class="material-icons">face</i> Create Character <div class='ripple-container'></div></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <table class="table table-striped">
                         <thead>
@@ -85,8 +94,85 @@
                 </div>
             </div>
         </div>
+
+        <div class="row" id="charcreate" style="display: block; padding-top: 20px; padding-left: 20px">
+            <div class="col-xs-4 col-xs-offset-8">
+                <div class="card card-hidden">
+                    <div class="card-header card-header-tabs" data-background-color="rose">
+                        <div class="nav-tabs-navigation">
+                            <div class="nav-tabs-wrapper">
+                                <h4 class="nav-tabs-title" style="padding: 0px;">Create Character</h4>
+                                <ul class="nav nav-tabs" data-tabs="tabs">
+                                    <li class="pull-right">
+                                        <a href="#" id="charcreate-cancel">Cancel <div class='ripple-container'></div></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <ul class="nav nav-pills nav-pills-icons nav-pills-rose nav-stacked" role="tablist">
+                                    <li class="active">
+                                        <a class="charcreate-tab-select" data-zoom="body" data-toggle="tab" href="#charcreate-info" role="tab" aria-expanded="false">
+                                            <i class="material-icons">account_box</i> You
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a class="charcreate-tab-select" data-zoom="face" data-toggle="tab" href="#charcreate-face" role="tab" aria-expanded="false">
+                                            <i class="material-icons">face</i> Face
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a class="charcreate-tab-select" data-zoom="body" data-toggle="tab" href="#charcreate-clothes" role="tab" aria-expanded="true">
+                                            <i class="material-icons">accessibility</i> Clothes
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="charcreate-info">
+                                        <div class="row">
+                                            <div class="col-xs-6"><input type="text" class="form-control" id="input-charcreate-first" placeholder="First Name"></div>
+                                            <div class="col-xs-6"><input type="text" class="form-control" id="input-charcreate-last" placeholder="Last Name"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <a href="#" class="btn btn-gender btn-simple btn-info btn-block" data-value="0">Male</a>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <a href="#" class="btn btn-gender btn-simple btn-success btn-block" data-value="1">Female</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="charcreate-face">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div id="face-slider" style="width: 100%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="charcreate-clothes">
+                                        Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas.
+                                        <br>
+                                        <br> Dramatically maintain clicks-and-mortar solutions without functional solutions. Dramatically visualize customer directed convergence without revolutionary ROI. Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer text-center">
+                        <div class="alert alert-danger text-center" style="display: none" id="charcreate-result"></div>
+                        <a href="#" id="charcreate-submit" class="btn btn-jade btn-simple btn-wd btn-lg disabled">Create Character<div class="ripple-container"></div></a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Magic happens here -->
         <script type="text/javascript" src="auth.js"></script>
         <script type="text/javascript" src="charSelect.js"></script>
+        <script type="text/javascript" src="charCreate.js"></script>
     </body>
 </html>

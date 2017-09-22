@@ -52,6 +52,26 @@ function Character(results) {
     this.created = results.created;
 }
 
+method.save = function(player) {
+    var tableKeys = {};
+
+    tableKeys.position = JSON.stringify(player.position);
+    tableKeys.heading = player.heading;
+    tableKeys.health = player.health;
+    tableKeys.armour = player.armour;
+    tableKeys.last_played = player.character.last_played;
+    tableKeys.bank_money = player.character.bank_money;
+    tableKeys.hand_money = player.character.hand_money;
+    // tableKeys.weapons = JSON.stringify(player.weapons);
+
+    connection.query(`UPDATE characters SET ? WHERE id = ?`, [tableKeys, player.character.id], function(err, result) {
+        if (err) {
+            console.log(err);
+            console.log(tableKeys);
+        }
+    });
+}
+
 method.getName = function() {
     return this.name;
 };

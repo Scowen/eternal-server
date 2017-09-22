@@ -25,3 +25,20 @@ global.Character = require('./core/character.js');
 require('./core/events.js');
 require('./core/commands.js');
 require('./core/auth.js');
+
+setInterval(function() {
+    var count = 0;
+    var countSaved = 0;
+    mp.players.forEach((player, id) => {
+        if (player.character != null) {
+            try {
+                player.character.save(player);
+                countSaved++;
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        count++;
+    });
+    console.log("[Info]", `Saved Players: ${countSaved} / ${count}`);
+}, 60000)
