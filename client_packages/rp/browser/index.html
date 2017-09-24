@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="assets/angular/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/jquery-ui.css">
         <link rel="stylesheet" type="text/css" href="assets/angular/css/material-dashboard.css">
         <link rel="stylesheet" type="text/css" href="assets/fonts/material-icons.css">
         <link rel="stylesheet" type="text/css" href="assets/css/main.css">
@@ -18,7 +19,7 @@
         <script src="assets/angular/js/plugins/jquery.sharrre.js"></script>
         <script src="assets/angular/js/core/init.js"></script>
         <script src="assets/angular/js/core/initMenu.js"></script>
-/    </head>
+    </head>
     <body>
         <div class="row" id="loginform" style="display: none">
             <div class="col-xs-12 text-center">
@@ -33,7 +34,7 @@
                             <div class="form-group label-floating">
                                 <label class="control-label">Username / Email</label>
                                 <div class="form-group field-loginform-username required has-success">
-                                    <input value="" type="text" id="loginform-username" autofocus="autofocus" class="form-control disable-after-submit" min="3" required="true" aria-required="true" aria-invalid="false">
+                                    <input value="Xylum" type="text" id="loginform-username" autofocus="autofocus" class="form-control disable-after-submit" min="3" required="true" aria-required="true" aria-invalid="false">
                                     <p class="help-block help-block-error"></p>
                                     <span class="material-input"></span>
                                 </div>
@@ -46,7 +47,7 @@
                             <div class="form-group label-floating">
                                 <label class="control-label">Password</label>
                                 <div class="form-group field-loginform-password required has-success">
-                                    <input value="" type="password" id="loginform-password" class="form-control disable-after-submit" min="5" required="true" aria-required="true" aria-invalid="false">
+                                    <input value="password" type="password" id="loginform-password" class="form-control disable-after-submit" min="5" required="true" aria-required="true" aria-invalid="false">
                                     <p class="help-block help-block-error"></p>
                                     <span class="material-input"></span>
                                 </div>
@@ -95,7 +96,7 @@
             </div>
         </div>
 
-        <div class="row" id="charcreate" style="display: none; padding-top: 20px; padding-left: 20px">
+        <div class="row" id="charcreate" style="display: block; padding-top: 20px; padding-left: 20px">
             <div class="col-xs-4 col-xs-offset-8">
                 <div class="card card-hidden">
                     <div class="card-header card-header-tabs" data-background-color="rose">
@@ -149,15 +150,43 @@
                                     </div>
                                     <div class="tab-pane" id="charcreate-face">
                                         <div class="row">
-                                            <div class="col-xs-12">
-                                                <div id="face-slider" style="width: 100%"></div>
+                                            <div class="col-xs-12 text-center">
+                                                Head Shape<br />
+                                                <div class="ui-slider" id="charcreate-slider-head-shape" data-value="0" data-min="0" data-max="20"></div>
                                             </div>
                                         </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xs-12 text-center">
+                                                Skin Colour<br />
+                                                <div class="ui-slider" id="charcreate-slider-skin-1" data-value="0" data-min="0" data-max="20"></div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xs-12 text-center">
+                                                Skin Offset<br />
+                                                <div class="ui-slider" id="charcreate-slider-skin-2" data-value="0" data-min="0" data-max="20"></div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xs-12 text-center">
+                                                Facial Hair<br />
+                                                <div class="ui-slider" id="charcreate-slider-facial" data-value="0" data-min="0" data-max="28"></div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xs-12 text-center">
+                                                Facial Hair Colour<br />
+                                                <div class="ui-slider" id="charcreate-slider-facial-colour" data-value="0" data-min="0" data-max="35"></div>
+                                            </div>
+                                        </div>
+                                        <br />
                                     </div>
                                     <div class="tab-pane" id="charcreate-clothes">
-                                        Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas.
-                                        <br>
-                                        <br> Dramatically maintain clicks-and-mortar solutions without functional solutions. Dramatically visualize customer directed convergence without revolutionary ROI. Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits.
+                                        Clothes
                                     </div>
                                 </div>
                             </div>
@@ -170,9 +199,12 @@
                 </div>
             </div>
         </div>
+
+
         <!-- Magic happens here -->
         <script type="text/javascript" src="auth.js"></script>
         <script type="text/javascript" src="charSelect.js"></script>
         <script type="text/javascript" src="charCreate.js"></script>
+    
     </body>
 </html>

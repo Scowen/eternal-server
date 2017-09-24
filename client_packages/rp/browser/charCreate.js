@@ -1,22 +1,59 @@
-var gender = null;
+var charOptions = {
+    firstName: "",
+    lastName: "",
+    gender: null,
+    shape: 0,
+    skin1: 0,
+    skin2: 0,
+}
+
+var model = {
+    male: 1885233650,
+    female: -1667301416,
+}
 
 function checkCreateCharacter() {
-    var firstname = $("#input-charcreate-first").val();
-    var lastname = $("#input-charcreate-last").val();
+    charOptions.firstname = $("#input-charcreate-first").val();
+    charOptions.lastname = $("#input-charcreate-last").val();
 
-    if (firstname.length >= 3 && lastname.length >= 3 && gender != null)
+    if (charOptions.firstname.length >= 3 && charOptions.lastname.length >= 3 && charOptions.gender != null)
         $("#charcreate-submit").removeClass("btn-simple").removeClass("disabled");
     else
         $("#charcreate-submit").addClass("btn-simple").addClass("disabled");
 }
 
-$(function() {
+
+$(document).ready(function() {
+    $(".ui-slider").each( function(index, value) {
+        console.log(index, value);
+        var min = $(value).attr("data-min");
+        var max = $(value).attr("data-max");
+        $(value).slider({
+            value: 0,
+            min: parseInt(min),
+            max: parseInt(max),
+            step: 1,
+            slide: function(event, ui) {
+                $(this).attr("data-value", ui.value);
+                updateFace();
+            }
+        });
+    })
+
+    function updateFace() {
+        charOptions.shape = parseInt($("#charcreate-slider-head-shape").attr("data-value"));
+        charOptions.skin1 = parseInt($("#charcreate-slider-skin-1").attr("data-value"));
+        charOptions.skin2 = parseInt($("#charcreate-slider-skin-2").attr("data-value"));
+        console.log(charOptions);
+        mp.trigger("updateHeadBlendData", charOptions.shape, charOptions.skin1, charOptions.skin2);
+    }
+
     $("#input-charcreate-first, #input-charcreate-last").keyup( function() {
         checkCreateCharacter();
     });
 
     $(".btn-gender").click( function() {
-        gender = $(this).attr("data-value");
+        charOptions.gender = $(this).attr("data-value");
         checkCreateCharacter();
         $(".btn-gender").addClass("btn-simple");
         $(this).removeClass("btn-simple");

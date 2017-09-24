@@ -14,4 +14,12 @@ exports = function(menu) {
         dynCam.setActive(true);
         mp.game.cam.renderScriptCams(true, false, 0, true, false);
     });
+
+    mp.events.add("updateHeadBlendData", function(shapeMix, skinMix, thirdMix) {
+        mp.players.local.updateHeadBlendData(shapeMix, skinMix, thirdMix);
+    });
+
+    mp.events.add("setHeadOverlay", function(overlayID, index, opacity) {
+        mp.players.local.setHeadOverlay(overlayID, index, opacity);
+    });
 };
