@@ -53,7 +53,8 @@ function characterSelectedResult(result, reason) {
 }
 
 $("#charselect-charcreate").click( function() {
-    $("#charselect").fadeOut(400, function() {
-        $("#charcreate").fadeIn();
-    });
+    $("#charselect").fadeOut();
+    $("#charcreate").fadeIn();
+
+    updateFace();
 })

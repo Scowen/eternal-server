@@ -2,9 +2,19 @@ var charOptions = {
     firstName: "",
     lastName: "",
     gender: null,
-    shape: 0,
-    skin1: 0,
-    skin2: 0,
+    shapeFirstID: 0,
+    shapeSecondID: 0,
+    shapeThirdID: 0,
+    skinFirstID: 0,
+    skinSecondID: 0,
+    skinThirdID: 0,
+    shapeMix: 0,
+    skinMix: 0,
+    thirdMix: 0,
+    isParent: false,
+    hair: 0,
+    beard: 0,
+    hairColour: 0,
 }
 
 var model = {
@@ -34,18 +44,20 @@ $(document).ready(function() {
             max: parseInt(max),
             step: 1,
             slide: function(event, ui) {
-                $(this).attr("data-value", ui.value);
+                charOptions[$(this).attr("data-option")] = ui.value;
                 updateFace();
             }
         });
     })
 
     function updateFace() {
-        charOptions.shape = parseInt($("#charcreate-slider-head-shape").attr("data-value"));
-        charOptions.skin1 = parseInt($("#charcreate-slider-skin-1").attr("data-value"));
-        charOptions.skin2 = parseInt($("#charcreate-slider-skin-2").attr("data-value"));
         console.log(charOptions);
-        mp.trigger("updateHeadBlendData", charOptions.shape, charOptions.skin1, charOptions.skin2);
+
+        mp.trigger("setHeadBlendData", charOptions.shapeFirstID, charOptions.shapeSecondID, charOptions.shapeThirdID, charOptions.skinFirstID, charOptions.skinSecondID, charOptions.skinThirdID, charOptions.shapeMix, charOptions.skinMix, charOptions.thirdMix, charOptions.isParent);
+        mp.trigger("setHeadOverlay", 1, charOptions.beard, 255);
+        mp.trigger("setHairColor", 2, charOptions.hairColour, charOptions.hairColour);
+        mp.trigger("setClothes", 2, charOptions.hair, 0, 0);
+        mp.trigger("setHeadOverlayColor", 1, charOptions.hairColour, charOptions.hairColour, charOptions.hairColour);
     }
 
     $("#input-charcreate-first, #input-charcreate-last").keyup( function() {
@@ -53,8 +65,11 @@ $(document).ready(function() {
     });
 
     $(".btn-gender").click( function() {
-        charOptions.gender = $(this).attr("data-value");
+        charOptions.gender = parseInt($(this).attr("data-value"));
         checkCreateCharacter();
+        let genderModel = (charOptions.gender == 1) ? model.female : model.male;
+        mp.trigger("setModel", genderModel);
+        updateFace();
         $(".btn-gender").addClass("btn-simple");
         $(this).removeClass("btn-simple");
     })
@@ -71,8 +86,7 @@ $(document).ready(function() {
 
     $("#charcreate-cancel").click( function() {
         mp.trigger("BodyCam");
-        $("#charcreate").fadeOut(400, function() {
-            $("#charselect").fadeIn();
-        });
+        $("#charcreate").fadeOut();
+        $("#charselect").fadeIn();
     })
 })

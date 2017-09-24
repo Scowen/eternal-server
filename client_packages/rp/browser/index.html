@@ -62,9 +62,9 @@
             </div>
         </div>
 
-        <div class="row" id="charselect" style="display: none; padding-top: 20px; padding-left: 20px">
+        <div class="row" style="padding-top: 20px; padding-left: 20px; padding-right: 20px;">
             <div class="col-xs-4">
-                <div class="card card-hidden">
+                <div class="card card-hidden" id="charselect" style="display: none">
                     <div class="card-header card-header-tabs" data-background-color="blue">
                         <div class="nav-tabs-navigation">
                             <div class="nav-tabs-wrapper">
@@ -94,11 +94,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row" id="charcreate" style="display: block; padding-top: 20px; padding-left: 20px">
-            <div class="col-xs-4 col-xs-offset-8">
-                <div class="card card-hidden">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-4">
+                <div class="card card-hidden" id="charcreate" style="display: none;">
                     <div class="card-header card-header-tabs" data-background-color="rose">
                         <div class="nav-tabs-navigation">
                             <div class="nav-tabs-wrapper">
@@ -151,36 +149,43 @@
                                     <div class="tab-pane" id="charcreate-face">
                                         <div class="row">
                                             <div class="col-xs-12 text-center">
-                                                Head Shape<br />
-                                                <div class="ui-slider" id="charcreate-slider-head-shape" data-value="0" data-min="0" data-max="20"></div>
+                                                Parent Head Shape A<br />
+                                                <div class="ui-slider" data-option="shapeFirstID" data-min="0" data-max="45"></div>
                                             </div>
                                         </div>
                                         <br />
-                                        <div class="row">
+                                         <div class="row">
+                                            <div class="col-xs-12 text-center">
+                                                Parent Head Shape B<br />
+                                                <div class="ui-slider" data-option="shapeSecondID" data-min="0" data-max="45"></div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                         <div class="row">
                                             <div class="col-xs-12 text-center">
                                                 Skin Colour<br />
-                                                <div class="ui-slider" id="charcreate-slider-skin-1" data-value="0" data-min="0" data-max="20"></div>
+                                                <div class="ui-slider" data-option="skinFirstID" data-min="0" data-max="20"></div>
                                             </div>
                                         </div>
                                         <br />
                                         <div class="row">
                                             <div class="col-xs-12 text-center">
-                                                Skin Offset<br />
-                                                <div class="ui-slider" id="charcreate-slider-skin-2" data-value="0" data-min="0" data-max="20"></div>
+                                                Hair<br />
+                                                <div class="ui-slider" data-option="hair" data-min="0" data-max="36"></div>
                                             </div>
                                         </div>
                                         <br />
                                         <div class="row">
                                             <div class="col-xs-12 text-center">
                                                 Facial Hair<br />
-                                                <div class="ui-slider" id="charcreate-slider-facial" data-value="0" data-min="0" data-max="28"></div>
+                                                <div class="ui-slider" data-option="beard" data-min="0" data-max="28"></div>
                                             </div>
                                         </div>
                                         <br />
                                         <div class="row">
                                             <div class="col-xs-12 text-center">
-                                                Facial Hair Colour<br />
-                                                <div class="ui-slider" id="charcreate-slider-facial-colour" data-value="0" data-min="0" data-max="35"></div>
+                                                Hair Colour<br />
+                                                <div class="ui-slider" data-option="hairColour" data-min="0" data-max="63"></div>
                                             </div>
                                         </div>
                                         <br />

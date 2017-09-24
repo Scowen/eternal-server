@@ -15,11 +15,31 @@ exports = function(menu) {
         mp.game.cam.renderScriptCams(true, false, 0, true, false);
     });
 
+    mp.events.add("setHeadBlendData", function(shapeFirstID, shapeSecondID, shapeThirdID, skinFirstID, skinSecondID, skinThirdID, shapeMix, skinMix, thirdMix, isParent) {
+        mp.players.local.setHeadBlendData(shapeFirstID, shapeSecondID, shapeThirdID, skinFirstID, skinSecondID, skinThirdID, shapeMix, skinMix, thirdMix, isParent);
+    });
+
     mp.events.add("updateHeadBlendData", function(shapeMix, skinMix, thirdMix) {
         mp.players.local.updateHeadBlendData(shapeMix, skinMix, thirdMix);
     });
 
     mp.events.add("setHeadOverlay", function(overlayID, index, opacity) {
         mp.players.local.setHeadOverlay(overlayID, index, opacity);
+    });
+
+    mp.events.add("setHeadOverlayColor", function(overlayID, colorType, colorID, secondColorID) {
+        mp.players.local.setHeadOverlayColor(overlayID, colorType, colorID, secondColorID);
+    });
+
+    mp.events.add("setModel", function(model) {
+        mp.players.local.model = model;
+    });
+
+    mp.events.add("setClothes", function(componentNumber, drawable, texture, palette) {
+        mp.players.local.setComponentVariation(componentNumber, drawable, texture, palette);
+    });
+
+    mp.events.add("setClothes", function(colorID, highlightColorID) {
+        mp.players.local.setHairColor(colorID, highlightColorID);
     });
 };
