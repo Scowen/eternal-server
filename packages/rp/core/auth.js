@@ -138,7 +138,7 @@ function loadCharacter(player, identifier) {
             // Hair and colour.
             // player.setClothes(1, clothes.beard, 0, 0);
             player.setClothes(2, clothes.hair, 0, 0);
-            // player.setHairColor(parseInt(clothes.hairColour), parseInt(clothes.hairColour));
+            player.setHairColour(parseInt(clothes.hairColour), parseInt(clothes.hairColour));
 
             // Clothes.
             let top = (clothes.gender == 1) ? femaleTops[clothes.jacket] : maleTops[clothes.jacket];
