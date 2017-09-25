@@ -3,7 +3,7 @@ var mysql = require('mysql2');
 global.connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "cjdann42",
+    password: "",
     database: "rage"
 });
 
@@ -15,7 +15,8 @@ connection.connect(function(err) {
 });
 ////////////////////////////////////////////////////////////////////////
 
-global.moment = require('moment');
+global.labels = [];
+global.dealerships = {};
 
 // "Classes"
 global.Account = require('./core/account.js');
@@ -23,8 +24,10 @@ global.Character = require('./core/character.js');
 
 // Core Components.
 require('./core/events.js');
-require('./core/commands.js');
 require('./core/auth.js');
+require('./core/dealerships.js');
+require('./core/commands.js');
+require('./core/commands_admin.js');
 
 setInterval(function() {
     var count = 0;
