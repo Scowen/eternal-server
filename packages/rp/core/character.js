@@ -4,6 +4,7 @@ function Character(results) {
     this.id = results.id;
     this.account = results.account;
     this.identifier = results.identifier;
+    this.identifier_int = results.identifier_int;
     this.mask_identifier = results.mask_identifier;
     this.name = results.name;
     this.bank_money = results.bank_money;

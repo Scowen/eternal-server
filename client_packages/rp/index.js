@@ -50,6 +50,16 @@ mp.events.add("characterSelectedResult", (result, reason) => {
     }
 });
 
+mp.events.add("characterCreatedResult", (result, reason) => {
+    if (!menu) return;
+    menu.execute(`characterCreatedResult(${result}, "${reason}")`);
+
+    if (result) {
+        showUI();
+        resetCamera();
+    }
+});
+
 mp.events.add("IPL", (value) => {
     mp.game.streaming.requestIpl(value);
 });

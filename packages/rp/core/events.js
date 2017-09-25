@@ -16,8 +16,10 @@ mp.events.add('playerQuit', (player) => {
         player.character.heading = player.heading;
         player.character.health = player.health;
         player.character.armour = player.armour;
+        var unix = Math.round(+new Date()/1000);
+        player.character.last_played = unix;
         // player.character.weapons = player.weapons;
-        player.last_played = moment.unix();
+        player.character.save();
     }
 });
 
