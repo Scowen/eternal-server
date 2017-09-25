@@ -132,6 +132,12 @@ mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
     });
 });
 
+mp.events.addCommand('revive', (player) => {
+    if (!isAdmin(player, 0, true)) return;
+
+    player.call("resurrect");
+});
+
 mp.events.addCommand('invis', (player, _, value) => {
     if (!isAdmin(player, ranks.juniorAdmin, true)) return;
 

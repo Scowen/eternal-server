@@ -32,6 +32,10 @@ mp.events.add("loginResult", (result, reason) => {
     menu.execute(`loginResult(${result}, "${reason}")`);
 });
 
+mp.events.add("resurrect", () => {
+    mp.players.local.resurrect();
+});
+
 mp.events.add("charSelect", (chars) => {
     hideUI();
     mp.game.streaming.requestIpl("apa_v_mp_h_05_b");
