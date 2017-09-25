@@ -3,6 +3,8 @@ let menu;
 
 global.dynCam;
 
+var labels = {};
+
 // On init, execute basic functions to prepare for login.
 loginScenario();
 
@@ -62,6 +64,21 @@ mp.events.add("characterCreatedResult", (result, reason) => {
 
 mp.events.add("IPL", (value) => {
     mp.game.streaming.requestIpl(value);
+});
+
+mp.events.add("textLabels", (value) => {
+    labels = JSON.parse(value);
+});
+
+mp.events.add('render', () => {
+    if (labels && labels != null && labels.length > 0) {
+        labels.forEach((value, key) => {
+            let pos = mp.players.local.position;
+            let distance = mp.game.gameplay.getDistanceBetweenCoords(pos.x, pos.y, pos.z, value.position.x, value.position.y, value.position.z, true);
+            if (distance < value.distance)
+                mp.game.graphics.drawText(value.text, 4, [value.r, value.g, value.b, value.a], 0.6, 0.6, true, value.position.x, value.position.y, value.position.z + 1);
+        });
+    }
 });
 
 function resetCamera() {

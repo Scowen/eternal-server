@@ -5,6 +5,8 @@ mp.events.add('playerJoin', (player) => {
     player.dimension = 1337;
 
     player.call("IPL", "apa_v_mp_h_05_b");
+
+    player.call("textLabels", JSON.stringify(labels));
 });
 
 mp.events.add('playerQuit', (player) => {

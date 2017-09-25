@@ -55,7 +55,7 @@ function updateCharacterPreview(options) {
     mp.trigger("setComponentVariation", 8, options.undershirt, 0, 0);
 }
 
-function characterSelectedResult(result, reason) {
+function characterCreatedResult(result, reason) {
     if (result === false) {
         $("#charcreate-result").text(reason).slideDown();
     } else { 
