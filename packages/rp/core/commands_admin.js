@@ -135,6 +135,9 @@ mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
 mp.events.addCommand('revive', (player) => {
     if (!isAdmin(player, 0, true)) return;
 
+    
+
+    player.position += new mp.Vector3(0.0, 0.0, 2);
     player.call("resurrect");
 });
 
