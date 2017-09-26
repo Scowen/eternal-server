@@ -63,6 +63,12 @@ mp.events.add("characterCreatedResult", (result, reason) => {
     }
 });
 
+mp.events.add("freezeVehicle", (value, state) => {
+    var vehicle = mp.vehicles.at(value);
+    if (vehicle && vehicle != null && vehicle != "undefined")
+        vehicle.freezePosition(state);
+});
+
 mp.events.add("IPL", (value) => {
     mp.game.streaming.requestIpl(value);
 });

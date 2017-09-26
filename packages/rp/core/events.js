@@ -37,6 +37,16 @@ mp.events.add('playerChat', (player, message) => {
     mp.players.broadcast(`${player.name}[${player.id}]: ${message}`);
 });
 
+mp.events.add('playerEnterVehicle', (player, vehicle, seat) => {
+    if (dealershipSpots && dealershipSpots != null) {
+        for (var key in dealershipSpots) {
+            var spot = dealershipSpots[key];
+            if (spot.vehicle == vehicle.id)
+                player.call("freezeVehicle", vehicle.id, true);
+        }
+    }
+});
+
 mp.events.add('clientData', function() {
     let player = arguments[0];
     let args = JSON.parse(arguments[1]);
