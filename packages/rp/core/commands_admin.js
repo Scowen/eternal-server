@@ -132,13 +132,21 @@ mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
     });
 });
 
+
+
 mp.events.addCommand('revive', (player) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.juniorAdmin, true)) return;
 
+    player.health = 100;
     
+    let position = player.position;
+    position.z += 2;
+    player.position = position;
 
-    player.position += new mp.Vector3(0.0, 0.0, 2);
-    player.call("resurrect");
+    Messages.adminSuccessMessage(player, `You revived yourself.`);
+
+    //player.call("resurrect");
+    //player.call("freezePosition")
 });
 
 mp.events.addCommand('invis', (player, _, value) => {

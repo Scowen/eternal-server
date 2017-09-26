@@ -32,6 +32,10 @@ mp.events.add("loginResult", (result, reason) => {
     menu.execute(`loginResult(${result}, "${reason}")`);
 });
 
+mp.events.add("freezePostion", () => {
+    mp.players.local.freezePostion(false);
+});
+
 mp.events.add("resurrect", () => {
     mp.players.local.resurrect();
 });
