@@ -3,29 +3,40 @@ var mysql = require('mysql2');
 global.connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "cjdann42",
     database: "rage"
 });
 
 connection.connect(function(err) {
-    if (err)
+    if (err) {
         console.log("[Error]", err);
-    else
-        console.log("[Info]", "MySql has connected.");
+        return;
+    }
+    
+    console.log("[Info]", "MySql has connected.");
+
+    Dealership.load();
+    DealershipSpot.load();
 });
 ////////////////////////////////////////////////////////////////////////
 
-global.labels = [];
+global.labels = {};
 global.dealerships = {};
+global.dealershipSpots = {};
 
 // "Classes"
 global.Account = require('./core/account.js');
 global.Character = require('./core/character.js');
+global.Messages = require('./core/messages.js');
+global.Utilities = require('./core/utilities.js');
+
+// Dealerships
+global.Dealership = require('./dealership/dealership.js');
+global.DealershipSpot = require('./dealership/dealership_spot.js');
 
 // Core Components.
 require('./core/events.js');
 require('./core/auth.js');
-require('./core/dealerships.js');
 require('./core/commands.js');
 require('./core/commands_admin.js');
 

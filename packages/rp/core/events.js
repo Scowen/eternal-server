@@ -2,7 +2,11 @@ mp.events.add('playerJoin', (player) => {
     console.log("[Info]", "Joined", player.name, player.ip);
     player.position = {x: -1324.206298828125, y: -1483.844970703125, z: 6.898984432220459};
     player.alpha = 0;
-    player.dimension = 1337;
+
+    let min = 1000;
+    let max = 9999;
+    let randomDimension = Math.floor(Math.random() * (max - min + 1)) + min;
+    player.dimension = randomDimension;
 
     player.call("IPL", "apa_v_mp_h_05_b");
 
@@ -36,4 +40,6 @@ mp.events.add('playerChat', (player, message) => {
 mp.events.add('clientData', function() {
     let player = arguments[0];
     let args = JSON.parse(arguments[1]);
+
+    // console.log(args);
 });

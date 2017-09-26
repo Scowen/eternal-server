@@ -3,7 +3,7 @@ let menu;
 
 global.dynCam;
 
-var labels = {};
+global.labels = null;
 
 // On init, execute basic functions to prepare for login.
 loginScenario();
@@ -71,13 +71,16 @@ mp.events.add("textLabels", (value) => {
 });
 
 mp.events.add('render', () => {
-    if (labels && labels != null && labels.length > 0) {
-        labels.forEach((value, key) => {
-            let pos = mp.players.local.position;
-            let distance = mp.game.gameplay.getDistanceBetweenCoords(pos.x, pos.y, pos.z, value.position.x, value.position.y, value.position.z, true);
-            if (distance < value.distance)
-                mp.game.graphics.drawText(value.text, 4, [value.r, value.g, value.b, value.a], 0.6, 0.6, true, value.position.x, value.position.y, value.position.z + 1);
-        });
+    if (labels && labels != null) {
+        for (var key in labels) {
+            var label = labels[key];
+            if (label != "undefined" && label.hasOwnProperty("position")) {
+                let pos = mp.players.local.position;
+                let distance = mp.game.gameplay.getDistanceBetweenCoords(pos.x, pos.y, pos.z, label.position.x, label.position.y, label.position.z, true);
+                if (distance < label.distance)
+                    mp.game.graphics.drawText(label.text, 4, [label.r, label.g, label.b, label.a], label.scale, label.scale, true, label.position.x, label.position.y, label.position.z + 1);
+            }
+        };
     }
 });
 
