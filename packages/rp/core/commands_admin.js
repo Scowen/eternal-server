@@ -1,3 +1,15 @@
+var ranks = {
+    developer: 9,
+    management: 8,
+    headAdmin: 7,
+    seniorAdmin: 6,
+    admin: 5,
+    juniorAdmin: 4,
+    trialAdmin: 3,
+    seniorSupport: 2,
+    support: 1,
+}
+
 function isAdmin(player, level, duty) {
     return true;
 
@@ -13,14 +25,14 @@ function isAdmin(player, level, duty) {
 }
 
 mp.events.addCommand('pos', (player) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.trialAdmin, true)) return;
 
     console.log(player.position, player.heading);
     Messages.adminMessage(player, `${player.position.x}, ${player.position.y}, ${player.position.z}`);
 });
 
 mp.events.addCommand('rot', (player) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.trialAdmin, true)) return;
 
     if (player.vehicle && player.vehicle != null) {
         console.log(JSON.stringify(player.vehicle.rotation));
@@ -32,17 +44,15 @@ mp.events.addCommand('rot', (player) => {
 });
 
 mp.events.addCommand('labels', (player) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.management, true)) return;
 
-    mp.players.forEach((value, id) => {
-        value.call("textLabels", JSON.stringify(labels));
-    });
+    Utilities.refreshLabels();
 
     Messages.adminSuccessMessage(player, "Labels have been refreshed.");
 });
 
 mp.events.addCommand('createdealership', (player, _, name) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.management, true)) return;
 
     var unix = Math.round(+new Date()/1000);
 
@@ -68,15 +78,16 @@ mp.events.addCommand('createdealership', (player, _, name) => {
 });
 
 mp.events.addCommand('refreshspots', (player) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.management, true)) return;
 
     DealershipSpot.load();
+
     Messages.adminSuccessMessage(player, `Dealership Spots refreshed successfully.`);
 });
 
 
 mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.management, true)) return;
 
     if (!player.vehicle || player.vehicle == null) {
         Messages.adminErrorMessage(player, "You must be in a vehicle to use this command.");
@@ -115,7 +126,7 @@ mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
 });
 
 mp.events.addCommand('invis', (player, _, value) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.juniorAdmin, true)) return;
 
     player.alpha = (player.alpha == 0) ? 255 : 0;
 
@@ -123,7 +134,7 @@ mp.events.addCommand('invis', (player, _, value) => {
 });
 
 mp.events.addCommand('ipl', (player, _, value) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.developer, true)) return;
 
     player.call('IPL', value);
 
@@ -131,7 +142,7 @@ mp.events.addCommand('ipl', (player, _, value) => {
 });
 
 mp.events.addCommand('dim', (player, _, value) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.trialAdmin, true)) return;
 
     player.dimension = value;
 
@@ -139,7 +150,7 @@ mp.events.addCommand('dim', (player, _, value) => {
 });
 
 mp.events.addCommand('veh', (player, _, vehName) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.seniorAdmin, true)) return;
 
     let vehicle = mp.vehicles.new(mp.joaat(vehName), player.position);
     // player.putIntoVehicle(vehicle, 0);
@@ -148,7 +159,7 @@ mp.events.addCommand('veh', (player, _, vehName) => {
 });
 
 mp.events.addCommand('fix', (player) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.admin, true)) return;
 
     if (!player.vehicle || player.vehicle == null) {
         Messages.adminErrorMessage(player, `You are not in a vehicle.`);
@@ -160,7 +171,7 @@ mp.events.addCommand('fix', (player) => {
 });
 
 mp.events.addCommand('flip', (player) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.juniorAdmin, true)) return;
 
     if (!player.vehicle || player.vehicle == null) {
         Messages.adminErrorMessage(player, `You are not in a vehicle.`);
@@ -174,7 +185,7 @@ mp.events.addCommand('flip', (player) => {
 });
 
 mp.events.addCommand('weapon', (player, _, weaponName) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.seniorAdmin, true)) return;
 
     if (weaponName.trim().length <= 0) {
         Messages.adminErrorMessage(player, `Please enter a valid weapon name.`);
@@ -186,7 +197,7 @@ mp.events.addCommand('weapon', (player, _, weaponName) => {
 });
 
 mp.events.addCommand('kill', (player) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.juniorAdmin, true)) return;
 
     player.health = 0;
 
@@ -194,7 +205,7 @@ mp.events.addCommand('kill', (player) => {
 });
 
 mp.events.addCommand('healme', (player) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.admin, true)) return;
 
     player.health = 100;
 
@@ -202,7 +213,7 @@ mp.events.addCommand('healme', (player) => {
 });
 
 mp.events.addCommand('armourme', (player) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.seniorAdmin, true)) return;
 
     player.armour = 100;
 
@@ -210,7 +221,7 @@ mp.events.addCommand('armourme', (player) => {
 });
 
 mp.events.addCommand('tp', (player, _, target) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.trialAdmin, true)) return;
 
     var targetPlayer = Utilities.getPlayer(target);
 
@@ -224,7 +235,7 @@ mp.events.addCommand('tp', (player, _, target) => {
 });
 
 mp.events.addCommand('get', (player, _, target) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.trialAdmin, true)) return;
 
     var targetPlayer = Utilities.getPlayer(target);
 
@@ -238,7 +249,7 @@ mp.events.addCommand('get', (player, _, target) => {
 });
 
 mp.events.addCommand('tppos', (player, _, x, y ,z) => {
-    if (!isAdmin(player, 0, true)) return;
+    if (!isAdmin(player, ranks.juniorAdmin, true)) return;
 
     if (!isNaN(parseFloat(x)) && !isNaN(parseFloat(y)) && !isNaN(parseFloat(z))) {
         player.position = new mp.Vector3(parseFloat(x),parseFloat(y),parseFloat(z));

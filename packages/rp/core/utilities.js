@@ -40,6 +40,18 @@ class Utilities {
         }
         return s.join(dec)
     }
+
+    static refreshLabels() {
+        mp.players.forEach((value, id) => {
+            value.call("textLabels", JSON.stringify(labels));
+        });
+    }
+
+    static refreshLabel(key, value) {
+        mp.players.forEach((value, id) => {
+            value.call("textLabel", key, JSON.stringify(value));
+        });
+    }
 }
 
 module.exports = Utilities;

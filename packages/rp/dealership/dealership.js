@@ -39,6 +39,8 @@ class Dealership {
                 loaded++;
             });
 
+            Utilities.refreshLabels();
+
             console.log(`[Info] ${loaded} dealerships loaded`);
         });
     }

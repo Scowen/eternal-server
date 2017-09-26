@@ -59,9 +59,10 @@ class DealershipSpot {
                     };
                 }
 
-
                 loaded++;
             });
+
+            Utilities.refreshLabels();
 
             console.log(`[Info] ${loaded} dealership spots`);
         });
