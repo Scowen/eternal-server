@@ -118,7 +118,7 @@ mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
                 return;
             }
 
-            DealershipSpot.load();
+            DealershipSpot.loadOne(result.insertId);
 
             Messages.adminSuccessMessage(player, `Dealership Spot created successfully.`);
         });
