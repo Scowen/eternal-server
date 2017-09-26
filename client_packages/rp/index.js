@@ -34,6 +34,7 @@ mp.events.add("loginResult", (result, reason) => {
 
 mp.events.add("charSelect", (chars) => {
     hideUI();
+    mp.game.streaming.requestIpl("apa_v_mp_h_05_b");
     dynCam = mp.cameras.new('default', new mp.Vector3(-776.3551025390625, 342.0123291015625, 197.38626403808594), new mp.Vector3(-15,0,270), 57);
     dynCam.setActive(true);
     mp.game.cam.renderScriptCams(true, false, 0, true, false);

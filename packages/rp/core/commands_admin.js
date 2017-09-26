@@ -85,6 +85,13 @@ mp.events.addCommand('refreshspots', (player) => {
     Messages.adminSuccessMessage(player, `Dealership Spots refreshed successfully.`);
 });
 
+mp.events.addCommand('refreshspot', (player, _, spot) => {
+    if (!isAdmin(player, ranks.management, true)) return;
+
+    DealershipSpot.loadOne(spot);
+
+    Messages.adminSuccessMessage(player, `Dealership spot ${spot} refreshed successfully.`);
+});
 
 mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
     if (!isAdmin(player, ranks.management, true)) return;

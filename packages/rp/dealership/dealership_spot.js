@@ -8,22 +8,10 @@ class DealershipSpot {
 
             let loaded = 0;
 
-            if (dealershipSpots && dealershipSpots != null) {
-                for (var key in dealershipSpots) {
-                    var spot = dealershipSpots[key];
-                    if (spot != null && spot != "undefined" && spot.vehicle != null && spot.vehicle != "undefined") {
-                        if (value.hash != spot.vehicle.model) {
-                            spot.vehicle.destroy();
-                            dealershipSpots[key].vehicle = null;
-                        }
-                    }
-                }
-            }
-
             result.forEach((value, key) => {
                 if (value == null) return;
 
-                DealershipSpot.addToDealershipSpots(key, value);
+                DealershipSpot.addToDealershipSpots(value.id, value);
 
                 loaded++;
             });
@@ -41,46 +29,38 @@ class DealershipSpot {
                 return;
             }
 
-            if (dealershipSpots && dealershipSpots != null) {
-                var spot = dealershipSpots[id];
-                if (spot != null && spot != "undefined" && spot.vehicle != null && spot.vehicle != "undefined") {
-                    if (result[0].hash != spot.vehicle.model) {
-                        spot.vehicle.destroy();
-                        dealershipSpots[id].vehicle = null;
-                    }
-                }
-            }
-
-            DealershipSpot.addToDealershipSpots(id, result[0]);
+            DealershipSpot.addToDealershipSpots(result[0].id, result[0]);
 
             Utilities.refreshLabels();
         });
     }
 
     static addToDealershipSpots(key, value) {
+        if (dealershipSpots[key] != null && dealershipSpots[key].vehicle != null) {
+            var vehAt = mp.vehicles.at(dealershipSpots[key].vehicle);
+            vehAt.destroy();
+        }
+
         dealershipSpots[key] = value;
         dealershipSpots[key].position = JSON.parse(value.position);
-        let rotation = JSON.parse(value.rotation);
-        dealershipSpots[key].rotation = new mp.Vector3(rotation.x, rotation.y, rotation.z);
-
+        let rot = JSON.parse(value.rotation);
+        dealershipSpots[key].rotation = new mp.Vector3(rot.x, rot.y, rot.z);
         dealershipSpots[key].label = "dealership-spot-"+value.id;
 
         if (value.hash != null) {
-            let spawnVehicle = true;
-            if (dealershipSpots[key].vehicle != null) {
-                if (dealershipSpots[key].vehicle.model == value.hash)   
-                    spawnVehicle = false;
-                else
-                    dealershipSpots[key].vehicle.destroy();
-            } 
+            setTimeout(function() {
+                let veh = mp.vehicles.new(value.hash, dealershipSpots[key].position);
+                veh.numberPlate = "" + key;
+                veh.engine = false;
+                veh.setColour(value.color1, value.color2);
 
-            let vehicle = mp.vehicles.new(value.hash, dealershipSpots[key].position);
-            vehicle.rotation = dealershipSpots[key].rotation;
-            vehicle.setColour(value.color1, value.color2);
-            // vehicle.engine = false;
+                dealershipSpots[key].vehicle = veh.id;
 
-            dealershipSpots[key].vehicle = vehicle;
-            
+                setTimeout(function() {
+                    veh.rotation = dealershipSpots[key].rotation;
+                }, 500);
+            }, 1000);
+
             labels[dealershipSpots[key].label] = {
                 text: `${value.name}\n$${Utilities.number_format(value.price)}\nStock: ${value.stock}`,
                 position: dealershipSpots[key].position,
