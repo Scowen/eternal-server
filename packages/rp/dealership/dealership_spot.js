@@ -12,8 +12,10 @@ class DealershipSpot {
                 for (var key in dealershipSpots) {
                     var spot = dealershipSpots[key];
                     if (spot != null && spot != "undefined" && spot.vehicle != null && spot.vehicle != "undefined") {
-                        spot.vehicle.destroy();
-                        dealershipSpots[key].vehicle = null;
+                        if (value.hash != spot.vehicle.model) {
+                            spot.vehicle.destroy();
+                            dealershipSpots[key].vehicle = null;
+                        }
                     }
                 }
             }
@@ -39,6 +41,16 @@ class DealershipSpot {
                 return;
             }
 
+            if (dealershipSpots && dealershipSpots != null) {
+                var spot = dealershipSpots[id];
+                if (spot != null && spot != "undefined" && spot.vehicle != null && spot.vehicle != "undefined") {
+                    if (result[0].hash != spot.vehicle.model) {
+                        spot.vehicle.destroy();
+                        dealershipSpots[id].vehicle = null;
+                    }
+                }
+            }
+
             DealershipSpot.addToDealershipSpots(id, result[0]);
 
             Utilities.refreshLabels();
@@ -52,13 +64,20 @@ class DealershipSpot {
         dealershipSpots[key].rotation = new mp.Vector3(rotation.x, rotation.y, rotation.z);
 
         dealershipSpots[key].label = "dealership-spot-"+value.id;
-        dealershipSpots[key].vehicle = null;
 
         if (value.hash != null) {
+            let spawnVehicle = true;
+            if (dealershipSpots[key].vehicle != null) {
+                if (dealershipSpots[key].vehicle.model == value.hash)   
+                    spawnVehicle = false;
+                else
+                    dealershipSpots[key].vehicle.destroy();
+            } 
+
             let vehicle = mp.vehicles.new(value.hash, dealershipSpots[key].position);
             vehicle.rotation = dealershipSpots[key].rotation;
             vehicle.setColour(value.color1, value.color2);
-            vehicle.engine = false;
+            // vehicle.engine = false;
 
             dealershipSpots[key].vehicle = vehicle;
             
@@ -73,6 +92,7 @@ class DealershipSpot {
                 distance: 7,
             };
         } else {
+            dealershipSpots[key].vehicle = null;
             labels[dealershipSpots[key].label] = {
                 text: `#${value.id}`,
                 position: dealershipSpots[key].position,
