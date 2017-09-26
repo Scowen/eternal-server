@@ -23,6 +23,7 @@ connection.connect(function(err) {
 global.labels = {};
 global.dealerships = {};
 global.dealershipSpots = {};
+global.vehicles = {};
 
 // "Classes"
 global.Account = require('./core/account.js');

@@ -151,6 +151,7 @@ function loadCharacter(player, identifier) {
 */
             console.log("[Success]", `Char select from: ${player.account.name}`);
             player.call('characterSelectedResult', true, "Success");
+            player.call('showBrowser', 'main');
         } else {
             console.log("[Failed]", `Char select from: ${player.account.name} (Doesn't exist)`);
             player.call('characterSelectedResult', false, "Character doesn't exist");

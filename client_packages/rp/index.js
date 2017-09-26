@@ -1,5 +1,6 @@
 // CEF browser.
 let menu;
+let mainBrowser;
 
 global.dynCam;
 
@@ -19,12 +20,40 @@ mp.events.add('guiReady', () => {
                 menu.execute('$("#loginform").fadeIn(400);');
                 // Init events.
                 require('rp/events.js')(menu);
-                
-
-                // mp.gui.execute(`insertMessageToChat('<div style="background-color: rgba(0, 0, 0, 0.75); font-size: 1.0vw; padding: 6px; color: #ff0000; font-weight: 600;"></div>', 'true');`);
             }
         });
     }
+});
+
+mp.events.add("showBrowser", (page) => {
+    if (menu)
+        menu.destroy();
+
+    if (mainBrowser && mainBrowser != null)
+        mainBrowser.destroy();
+
+    mainBrowser = mp.browsers.new(`package://rp/browser/${page}.html`);
+
+    mp.events.add('browserDomReady', (browser) => {
+        if (browser == mainBrowser) {
+            require('rp/events.js')(mainBrowser);
+        }
+    });
+});
+
+mp.events.add("showOptionsBox", (title, subtitle) => {
+    if (!mainBrowser) return;
+    mainBrowser.execute(`showOptionsBox("${title}", "${subtitle}")`);
+});
+
+mp.events.add("hideOptionsBox", (title, subtitle) => {
+    if (!mainBrowser) return;
+    mainBrowser.execute(`hideOptionsBox()`);
+});
+
+mp.events.add("errorOptionsBox", (message) => {
+    if (!mainBrowser) return;
+    mainBrowser.execute(`errorOptionsBox("${message}")`);
 });
 
 mp.events.add("loginResult", (result, reason) => {
@@ -71,8 +100,8 @@ mp.events.add("characterCreatedResult", (result, reason) => {
     }
 });
 
-mp.events.add("freezeVehicle", (value, state) => {
-    var vehicle = mp.vehicles.at(value);
+mp.events.add("freezeVehicle", (id, state) => {
+    var vehicle = mp.vehicles.at(id);
     if (vehicle && vehicle != null && vehicle != "undefined")
         vehicle.freezePosition(state);
 });
@@ -81,8 +110,14 @@ mp.events.add("IPL", (value) => {
     mp.game.streaming.requestIpl(value);
 });
 
-mp.events.add("textLabels", (value) => {
-    labels = JSON.parse(value);
+mp.events.add("textLabels", (val) => {
+    labels = JSON.parse(val);
+});
+
+mp.events.add("setEngineOn", (id, value, instantly, otherwise) => {
+    var vehicle = mp.vehicles.at(id);
+    if (vehicle && vehicle != null && vehicle != "undefined")
+        vehicle.setEngineOn(value, instantly, otherwise);
 });
 
 mp.events.add('render', () => {

@@ -52,6 +52,20 @@ class Utilities {
             value.call("textLabel", key, JSON.stringify(value));
         });
     }
+
+    static showOptionsBox(player, option, title, subtitle) {
+        player.data.optionsBox = option;
+        player.call("showOptionsBox", title, subtitle);
+    }
+
+    static hideOptionsBox(player, option) {
+        player.data.optionsBox = null;
+        player.call("hideOptionsBox");
+    }
+
+    static errorOptionsBox(player, message) {
+        player.call("errorOptionsBox", message);
+    }
 }
 
 module.exports = Utilities;
