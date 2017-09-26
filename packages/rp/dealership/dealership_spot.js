@@ -11,9 +11,9 @@ class DealershipSpot {
             if (dealershipSpots && dealershipSpots != null) {
                 for (var key in dealershipSpots) {
                     var spot = dealershipSpots[key];
-                    if (spot.vehicle != null) {
+                    if (spot != null && spot != "undefined" && spot.vehicle != null && spot.vehicle != "undefined") {
                         spot.vehicle.destroy();
-                        spot.vehicle = null;
+                        dealershipSpots[key].vehicle = null;
                     }
                 }
             }
