@@ -8,18 +8,30 @@ class DealershipSpot {
 
             let loaded = 0;
 
+            if (dealershipSpots && dealershipSpots != null) {
+                for (var key in dealershipSpots) {
+                    var spot = dealershipSpots[key];
+                    if (spot.vehicle != null) {
+                        spot.vehicle.destroy();
+                        spot.vehicle = null;
+                    }
+                }
+            }
+
             result.forEach((value, key) => {
                 if (value == null) return;;
 
                 dealershipSpots[key] = value;
                 dealershipSpots[key].position = JSON.parse(value.position);
+                let rotation = JSON.parse(value.rotation);
+                dealershipSpots[key].rotation = new mp.Vector3(rotation.x, rotation.y, rotation.z);
 
                 dealershipSpots[key].label = "dealership-spot-"+value.id;
                 dealershipSpots[key].vehicle = null;
 
                 if (value.hash != null) {
                     let vehicle = mp.vehicles.new(value.hash, dealershipSpots[key].position);
-                    vehicle.rotation = new mp.Vector3(0, value.heading, 0);
+                    vehicle.rotation = dealershipSpots[key].rotation;
                     vehicle.setColour(value.color1, value.color2);
 
                     dealershipSpots[key].vehicle = vehicle;

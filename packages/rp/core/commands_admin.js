@@ -16,7 +16,19 @@ mp.events.addCommand('pos', (player) => {
     if (!isAdmin(player, 0, true)) return;
 
     console.log(player.position, player.heading);
-    Messages.adminMessage(player, `${player.position.x}, ${player.position.y}, ${player.position.z} | ${player.heading}`);
+    Messages.adminMessage(player, `${player.position.x}, ${player.position.y}, ${player.position.z}`);
+});
+
+mp.events.addCommand('rot', (player) => {
+    if (!isAdmin(player, 0, true)) return;
+
+    if (player.vehicle && player.vehicle != null) {
+        console.log(JSON.stringify(player.vehicle.rotation));
+        Messages.adminMessage(player, JSON.stringify(player.vehicle.rotation));
+    } else { 
+        console.log(player.heading);
+        Messages.adminMessage(player, player.heading);
+    }
 });
 
 mp.events.addCommand('labels', (player) => {
@@ -49,14 +61,27 @@ mp.events.addCommand('createdealership', (player, _, name) => {
             return;
         }
         
-        loadDealerships();
+        Dealership.load();
 
         Messages.adminSuccessMessage(player, `Dealership ${name} created successfully.`);
     });
 });
 
+mp.events.addCommand('refreshspots', (player) => {
+    if (!isAdmin(player, 0, true)) return;
+
+    DealershipSpot.load();
+    Messages.adminSuccessMessage(player, `Dealership Spots refreshed successfully.`);
+});
+
+
 mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
     if (!isAdmin(player, 0, true)) return;
+
+    if (!player.vehicle || player.vehicle == null) {
+        Messages.adminErrorMessage(player, "You must be in a vehicle to use this command.");
+        return;
+    }
 
     var unix = Math.round(+new Date()/1000);
 
@@ -71,7 +96,7 @@ mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
         let insertOptions = {
             dealership: dealership.id,
             position: JSON.stringify(player.position),
-            heading: player.heading,
+            rotation: JSON.stringify(player.vehicle.rotation),
             last_updated: unix,
             created: unix,
         }
@@ -82,8 +107,7 @@ mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
                 return;
             }
 
-            let rotation = new mp.Vector3(0, 0, 0);
-            mp.markers.new(0, player.position, rotation, rotation, 1, 255, 50, 50, 255, true, 0);
+            DealershipSpot.load();
 
             Messages.adminSuccessMessage(player, `Dealership Spot created successfully.`);
         });
