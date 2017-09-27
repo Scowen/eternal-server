@@ -3,7 +3,7 @@ var mysql = require('mysql2');
 global.connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "niggers",
+    password: "cjdann42",
     database: "rage"
 });
 
@@ -19,6 +19,8 @@ connection.connect(function(err) {
     DealershipSpot.load();
 });
 ////////////////////////////////////////////////////////////////////////
+
+global.randomString = require("randomstring");
 
 global.labels = {};
 global.dealerships = {};

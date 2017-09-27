@@ -61,12 +61,8 @@ mp.events.add("loginResult", (result, reason) => {
     menu.execute(`loginResult(${result}, "${reason}")`);
 });
 
-mp.events.add("freezePostion", () => {
-    mp.players.local.freezePostion(false);
-});
-
-mp.events.add("resurrect", () => {
-    mp.players.local.resurrect();
+mp.events.add("setRadioToStationIndex", (radioStation) => {
+    mp.game.audio.setRadioToStationIndex(radioStation);
 });
 
 mp.events.add("charSelect", (chars) => {

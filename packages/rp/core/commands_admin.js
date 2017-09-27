@@ -54,7 +54,7 @@ mp.events.addCommand('labels', (player) => {
 mp.events.addCommand('createdealership', (player, _, name) => {
     if (!isAdmin(player, ranks.management, true)) return;
 
-    var unix = Math.round(+new Date()/1000);
+    var unix = Utilities.unix();
 
     let insertOptions = {
         name: name,
@@ -77,22 +77,6 @@ mp.events.addCommand('createdealership', (player, _, name) => {
     });
 });
 
-mp.events.addCommand('refreshspots', (player) => {
-    if (!isAdmin(player, ranks.management, true)) return;
-
-    DealershipSpot.load();
-
-    Messages.adminSuccessMessage(player, `Dealership Spots refreshed successfully.`);
-});
-
-mp.events.addCommand('refreshspot', (player, _, spot) => {
-    if (!isAdmin(player, ranks.management, true)) return;
-
-    DealershipSpot.loadOne(spot);
-
-    Messages.adminSuccessMessage(player, `Dealership spot ${spot} refreshed successfully.`);
-});
-
 mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
     if (!isAdmin(player, ranks.management, true)) return;
 
@@ -101,7 +85,7 @@ mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
         return;
     }
 
-    var unix = Math.round(+new Date()/1000);
+    var unix = Utilities.unix();
 
     connection.query("SELECT * FROM dealership WHERE name = ?", [dealershipName], function(err, result) {
         if (err || !result || result == null || result.length <= 0) {
@@ -113,7 +97,7 @@ mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
 
         let insertOptions = {
             dealership: dealership.id,
-            position: JSON.stringify(player.position),
+            position: JSON.stringify(player.vehicle.position),
             rotation: JSON.stringify(player.vehicle.rotation),
             last_updated: unix,
             created: unix,
@@ -132,7 +116,60 @@ mp.events.addCommand('createdealershipspot', (player, _, dealershipName) => {
     });
 });
 
+mp.events.addCommand('setdealershippurchase', (player, _, dealershipName) => {
+    if (!isAdmin(player, ranks.management, true)) return;
 
+    if (!player.vehicle || player.vehicle == null) {
+        Messages.adminErrorMessage(player, "You must be in a vehicle to use this command.");
+        return;
+    }
+
+    var unix = Utilities.unix();
+
+    connection.query("SELECT * FROM dealership WHERE name = ?", [dealershipName], function(err, result) {
+        if (err || !result || result == null || result.length <= 0) {
+            Messages.adminErrorMessage(player, `Dealership ${dealershipName} does not exist.`);
+            return;
+        }
+
+        let dealership = result[0];
+
+        let updateOptions = {
+            purchase_position: JSON.stringify(player.vehicle.position),
+            purchase_rotation: JSON.stringify(player.vehicle.rotation),
+        };
+        connection.query("UPDATE dealership SET ? WHERE id = ?", [updateOptions, dealership.id], function(err, result) {
+            if (err && err != null) {
+                console.log("[Error]", "Failed to update dealership: " + err);
+                Messages.adminErrorMessage(player, "Error setting dealership purchase position.");
+                return;
+            }
+
+            dealerships[dealership.id].purchase_position = player.vehicle.position;
+            dealerships[dealership.id].purchase_rotation = player.vehicle.rotation;
+
+            console.log(dealerships);
+
+            Messages.adminSuccessMessage(player, `Dealership purchase position updated successfully.`);
+        });
+    });
+});
+
+mp.events.addCommand('refreshspots', (player) => {
+    if (!isAdmin(player, ranks.management, true)) return;
+
+    DealershipSpot.load();
+
+    Messages.adminSuccessMessage(player, `Dealership Spots refreshed successfully.`);
+});
+
+mp.events.addCommand('refreshspot', (player, _, spot) => {
+    if (!isAdmin(player, ranks.management, true)) return;
+
+    DealershipSpot.loadOne(spot);
+
+    Messages.adminSuccessMessage(player, `Dealership spot ${spot} refreshed successfully.`);
+});
 
 mp.events.addCommand('revive', (player) => {
     if (!isAdmin(player, ranks.juniorAdmin, true)) return;

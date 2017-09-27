@@ -41,6 +41,10 @@ class Utilities {
         return s.join(dec)
     }
 
+    static unix() {
+        return Math.round(+new Date()/1000);
+    }
+
     static refreshLabels() {
         mp.players.forEach((value, id) => {
             value.call("textLabels", JSON.stringify(labels));

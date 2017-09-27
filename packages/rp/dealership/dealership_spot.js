@@ -87,4 +87,95 @@ class DealershipSpot {
     }
 }
 
+mp.events.add('playerEnterVehicle', (player, vehicle, seat) => {
+    if (dealershipSpots && dealershipSpots != null) {
+        for (var key in dealershipSpots) {
+            var spot = dealershipSpots[key];
+            if (spot.vehicle == vehicle.id) {
+                player.call("freezeVehicle", vehicle.id, true);
+                player.data.currentlyInSpot = spot.id;
+                if (spot.stock > 0) {
+                    Utilities.showOptionsBox(player, "buy_dealership_vehicle", 
+                        `Would you like to purchase this ${spot.name}?`, 
+                        `Price: $${Utilities.number_format(spot.price)}`);
+                }
+            }
+        }
+    }
+});
+
+mp.events.add('clientData', function() {
+    let player = arguments[0];
+    let args = JSON.parse(arguments[1]);
+
+    if (args[0] == "option") {
+        if (player.data.optionsBox == "buy_dealership_vehicle") {
+            var value = args[1];
+
+            if (value == 0 || value == "0" || player.data.currentlyInSpot == null) {
+                Utilities.hideOptionsBox(player);
+                player.data.currentlyInSpot = null;
+                if (player.vehicle) player.removeFromVehicle();
+                return;
+            }
+
+            var spot = dealershipSpots[player.data.currentlyInSpot];
+
+            if (!spot || spot == null || spot == "undefined") {
+                Utilities.hideOptionsBox(player);
+                console.log("[Error]", "Spot doesn't exist.");
+                return;
+            }
+
+            var dealership = dealerships[spot.dealership];
+
+            if (!dealership || dealership == null || dealership == "undefined") {
+                Utilities.hideOptionsBox(player);
+                console.log("[Error]", "Dealership doesn't exist.");
+                return;
+            }
+
+            if (player.character.bank_money < spot.price) {
+                Utilities.errorOptionsBox(player, "You do not have enough funds in your bank account.");
+                return;
+            }
+
+
+            let veh = mp.vehicles.new(spot.hash, dealership.purchase_position);
+            let plate = randomString.generate(8);
+            /*
+            let plateResult = connection.execute('SELECT plate FROM vehicles WHERE plate = ?', [plate]);
+            while (plateResult != null && plateResult != "undefined" && plateResult._rows.length >= 1) {
+                plate = randomString.generate(8);
+                plateResult = connection.execute('SELECT plate FROM vehicles WHERE plate = ?', [plate]);
+            }
+            */
+
+            veh.numberPlate = "" + plate;
+            veh.setColour(spot.color1, spot.color2);
+
+            if (player.vehicle) player.removeFromVehicle();
+
+            setTimeout(function() {
+                veh.rotation = dealership.purchase_rotation;
+                player.putIntoVehicle(veh, 0);
+            }, 500);
+
+            Utilities.hideOptionsBox(player);
+
+            dealershipSpots[spot.id].stock -= 1;
+            dealerships[dealership.id].balance += spot.price;
+            player.character.bank_money -= spot.price;
+
+            connection.query("UPDATE dealership_spot SET stock = ? WHERE id = ?", [dealershipSpots[spot.id].stock, spot.id], function(err, result) {});
+            connection.query("UPDATE dealership SET balance = ? WHERE id = ?", [dealerships[dealership.id].balance, dealership.id], function(err, result) {});
+            connection.query("UPDATE character SET bank_money = ? WHERE id = ?", [player.character.bank_money, player.character.id], function(err, result) {});
+
+            labels[spot.label].text = `${dealershipSpots[spot.id].name}\n$${Utilities.number_format(dealershipSpots[spot.id].price)}\nStock: ${dealershipSpots[spot.id].stock}`;
+            Utilities.refreshLabels();
+        }
+        return;
+    }
+});
+
 module.exports = DealershipSpot;
