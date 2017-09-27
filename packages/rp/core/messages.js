@@ -7,9 +7,14 @@ var blue = "#3fafdb";
 var silver = "#d2d6d8";
 var grey = "#9fa2a3";
 var black = "#000000";
-var violet = "#cf8fea";
+var violet = "#e6ccff";
+var purple = "#9702ff";
 
 var adminTag = `!{red}[Admin]!{white}`;
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 class Messages {
     static adminMessage(player, message) {
@@ -42,6 +47,16 @@ class Messages {
 
     static infoMessage(player, message) {
         player.outputChatBox(`!{orange}Info:!{white} ${message}`);
+    }
+
+    static meMessage(player, message) {
+        
+        mp.players.broadcastInRange(player.position, 15, `!{violet}${player.character.name} ${message}`);
+    }
+
+    static doMessage(player, message) {
+        
+        mp.players.broadcastInRange(player.position, 15, `!{violet}${capitalizeFirstLetter(message)} (${player.character.name})`);
     }
 }
 

@@ -1,6 +1,8 @@
+
 mp.events.addCommand("me", (player, message) => {
-    let pos = player.position;
+    Messages.meMessage(player, message);
+});
 
-    mp.players.broadcastInRange(pos, 15, `${player.name} ${message}`);
-
+mp.events.addCommand("do", (player, message) => {
+    Messages.doMessage(player, message);
 });
