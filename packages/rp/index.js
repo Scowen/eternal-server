@@ -17,6 +17,8 @@ connection.connect(function(err) {
 
     Dealership.load();
     DealershipSpot.load();
+    VehicleInfo.load(null);
+    
 });
 ////////////////////////////////////////////////////////////////////////
 
@@ -26,12 +28,15 @@ global.labels = {};
 global.dealerships = {};
 global.dealershipSpots = {};
 global.vehicles = {};
+global.vehicleInfos = {};
 
 // "Classes"
 global.Account = require('./core/account.js');
 global.Character = require('./core/character.js');
 global.Messages = require('./core/messages.js');
 global.Utilities = require('./core/utilities.js');
+global.Vehicle = require('./core/vehicle.js');
+global.VehicleInfo = require('./core/vehicle_info.js');
 
 // Dealerships
 global.Dealership = require('./dealership/dealership.js');

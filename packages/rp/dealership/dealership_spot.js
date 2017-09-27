@@ -161,16 +161,10 @@ mp.events.add('clientData', function() {
                 return;
             }
 
-
+/*
             let veh = mp.vehicles.new(spot.hash, dealership.purchase_position);
             let plate = randomString.generate(8);
-            /*
-            let plateResult = connection.execute('SELECT plate FROM vehicles WHERE plate = ?', [plate]);
-            while (plateResult != null && plateResult != "undefined" && plateResult._rows.length >= 1) {
-                plate = randomString.generate(8);
-                plateResult = connection.execute('SELECT plate FROM vehicles WHERE plate = ?', [plate]);
-            }
-            */
+            
 
             veh.numberPlate = "" + plate;
             veh.setColour(spot.color1, spot.color2);
@@ -181,6 +175,36 @@ mp.events.add('clientData', function() {
                 veh.rotation = dealership.purchase_rotation;
                 player.putIntoVehicle(veh, 0);
             }, 500);
+*/
+            let plate = randomString.generate(8);
+            /*
+            let plateResult = connection.execute('SELECT plate FROM vehicles WHERE plate = ?', [plate]);
+            while (plateResult != null && plateResult != "undefined" && plateResult._rows.length >= 1) {
+                plate = randomString.generate(8);
+                plateResult = connection.execute('SELECT plate FROM vehicles WHERE plate = ?', [plate]);
+            }
+            */
+
+            let vehId = Vehicle.insert({
+                hash: spot.hash,
+                plate: plate,
+                owner: player.character.id,
+                active: 1,
+                health: 1000,
+                colour1: spot.color1,
+                colour2: spot.color2,
+                position: dealership.purchase_position,
+                rotation: dealership.purchase_rotation,
+                last_updated: Utilities.unix(),
+                created: Utilities.unix(),
+            });
+
+            setTimeout(function() {
+                Vehicle.load({id: vehId});
+                setTimeout(function() {
+                    player.putIntoVehicle(vehicles[vehId].entity, 0);
+                }, 500);
+            }, 500);
 
             Utilities.hideOptionsBox(player);
 
@@ -189,7 +213,7 @@ mp.events.add('clientData', function() {
             player.character.bank_money -= spot.price;
 
             dealerships[dealership.id].save();
-            player.character.save();
+            player.character.save(player);
             dealershipSpots[spot.id].save();
 
             labels[spot.label].text = `${dealershipSpots[spot.id].name}\n$${Utilities.number_format(dealershipSpots[spot.id].price)}\nStock: ${dealershipSpots[spot.id].stock}`;

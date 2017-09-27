@@ -36,7 +36,7 @@ mp.events.add('playerDeath', (player) => {
 });
 
 mp.events.add('playerChat', (player, message) => {
-    mp.players.broadcast(`${player.name}[${player.id}]: ${message}`);
+    mp.players.broadcast(`${player.character.name}[${player.character.identifier}]: ${message}`);
 });
 
 mp.events.add('playerEnterVehicle', (player, vehicle, seat) => {

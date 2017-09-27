@@ -147,8 +147,11 @@ function loadCharacter(player, identifier) {
             player.setClothes(6, clothes.foot, 0, 0);
             player.setClothes(11, clothes.jacket, clothes.jacketTexture, 0);
             player.setClothes(8, clothes.undershirt, 0, 0);
-/*
-*/
+
+            Vehicle.load("SELECT * FROM vehicle WHERE owner = ? AND active = ? AND destroyed = ? AND for_sale = ?", [
+                player.character.id, 1, 0, 0
+            ]);
+
             console.log("[Success]", `Char select from: ${player.account.name}`);
             player.call('characterSelectedResult', true, "Success");
             player.call('showBrowser', 'main');
