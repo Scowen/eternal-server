@@ -1,4 +1,17 @@
 class DealershipSpot {
+    constructor(values) {
+        if (!values || values == null)
+            return;
+        
+        for (var key in values)
+            this[key] = values[key];
+
+        this.position = JSON.parse(value.position);
+        let rot = JSON.parse(value.rotation);
+        this.rotation = new mp.Vector3(rot.x, rot.y, rot.z);
+        this.label = "dealership-spot-"+value.id;
+    }
+
     static load() {
         connection.query("SELECT * FROM dealership_spot", [], function(err, result) {
             if (err || !result || result == null || result.length <= 0) {
@@ -41,29 +54,24 @@ class DealershipSpot {
             vehAt.destroy();
         }
 
-        dealershipSpots[key] = value;
-        dealershipSpots[key].position = JSON.parse(value.position);
-        let rot = JSON.parse(value.rotation);
-        dealershipSpots[key].rotation = new mp.Vector3(rot.x, rot.y, rot.z);
-        dealershipSpots[key].label = "dealership-spot-"+value.id;
+        var spot = new DealershipSpot(value);
 
-        if (value.hash != null) {
+        if (spot.hash != null) {
             setTimeout(function() {
-                let veh = mp.vehicles.new(value.hash, dealershipSpots[key].position);
+                let veh = mp.vehicles.new(spot.hash, spot.position);
                 veh.numberPlate = "" + key;
-                veh.engine = false;
-                veh.setColour(value.color1, value.color2);
+                veh.setColour(spot.color1, spot.color2);
 
-                dealershipSpots[key].vehicle = veh.id;
+                spot.vehicle = veh.id;
 
                 setTimeout(function() {
-                    veh.rotation = dealershipSpots[key].rotation;
+                    veh.rotation = spot.rotation;
                 }, 500);
             }, 1000);
 
-            labels[dealershipSpots[key].label] = {
-                text: `${value.name}\n$${Utilities.number_format(value.price)}\nStock: ${value.stock}`,
-                position: dealershipSpots[key].position,
+            labels[spot.label] = {
+                text: `${spot.name}\n$${Utilities.number_format(spot.price)}\nStock: ${spot.stock}`,
+                position: spot.position,
                 r: 224,
                 g: 195,
                 b: 51,
@@ -72,10 +80,10 @@ class DealershipSpot {
                 distance: 7,
             };
         } else {
-            dealershipSpots[key].vehicle = null;
-            labels[dealershipSpots[key].label] = {
-                text: `#${value.id}`,
-                position: dealershipSpots[key].position,
+            spot.vehicle = null;
+            labels[spot.label] = {
+                text: `#${spot.id}`,
+                position: spot.position,
                 r: 180,
                 g: 180,
                 b: 180,
@@ -84,6 +92,7 @@ class DealershipSpot {
                 distance: 5,
             };
         }
+        dealershipSpots[spot.id] = spot;
     }
 }
 
@@ -167,9 +176,10 @@ mp.events.add('clientData', function() {
             dealerships[dealership.id].balance += spot.price;
             player.character.bank_money -= spot.price;
 
+            dealerships[dealership.id].save();
+            player.character.save();
+
             connection.query("UPDATE dealership_spot SET stock = ? WHERE id = ?", [dealershipSpots[spot.id].stock, spot.id], function(err, result) {});
-            connection.query("UPDATE dealership SET balance = ? WHERE id = ?", [dealerships[dealership.id].balance, dealership.id], function(err, result) {});
-            connection.query("UPDATE character SET bank_money = ? WHERE id = ?", [player.character.bank_money, player.character.id], function(err, result) {});
 
             labels[spot.label].text = `${dealershipSpots[spot.id].name}\n$${Utilities.number_format(dealershipSpots[spot.id].price)}\nStock: ${dealershipSpots[spot.id].stock}`;
             Utilities.refreshLabels();

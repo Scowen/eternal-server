@@ -1,26 +1,18 @@
-let method = Account.prototype;
+class Account {
+    constructor(values) {
+        if (values && values != null)
+            for (var key in values)
+                this[key] = values[key];
+    }
 
-function Account(results) {
-    this.id = results.id;
-    this.name = results.name;
-    this.email = results.email;
-    this.password = results.password;
-    this.credits = results.credits;
-    this.social = results.social;
-    this.char_slots = results.char_slots;
-    this.donator = results.donator;
-    this.vip = results.vip;
-    this.current_ip = results.current_ip;
-    this.active = results.active;
-    this.admin = results.admin;
-    this.quiz_passed = results.quiz_passed;
-    this.quiz_cooldown = results.quiz_cooldown;
-    this.last_updated = results.last_updated;
-    this.created = results.created;
+    save() {
+        connection.query("UPDATE account SET ? WHERE id = ?", [this, this.id], function(err, result) {
+            if (err && err != null) {
+                console.log("[Error]", "Saving Account #" + this.id);
+                console.log("[Error]", err);
+            }
+        });
+    }
 }
-
-method.getName = function() {
-    return this.name;
-};
 
 module.exports = Account;
