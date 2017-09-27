@@ -6,10 +6,22 @@ class DealershipSpot {
         for (var key in values)
             this[key] = values[key];
 
-        this.position = JSON.parse(value.position);
-        let rot = JSON.parse(value.rotation);
+        this.position = JSON.parse(this.position);
+        let rot = JSON.parse(this.rotation);
         this.rotation = new mp.Vector3(rot.x, rot.y, rot.z);
-        this.label = "dealership-spot-"+value.id;
+        this.label = "dealership-spot-"+this.id;
+    }
+
+    save() {
+        this.position = JSON.parse(this.position);
+        this.rotation = JSON.parse(this.rotation);
+
+        connection.query("UPDATE dealership_spot SET ? WHERE id = ?", [this, this.id], function(err, result) {
+            if (err && err != null) {
+                console.log("[Error]", "Saving Dealership Spot #" + this.id);
+                console.log("[Error]", err);
+            }
+        });
     }
 
     static load() {
@@ -178,8 +190,7 @@ mp.events.add('clientData', function() {
 
             dealerships[dealership.id].save();
             player.character.save();
-
-            connection.query("UPDATE dealership_spot SET stock = ? WHERE id = ?", [dealershipSpots[spot.id].stock, spot.id], function(err, result) {});
+            dealershipSpots[spot.id].save();
 
             labels[spot.label].text = `${dealershipSpots[spot.id].name}\n$${Utilities.number_format(dealershipSpots[spot.id].price)}\nStock: ${dealershipSpots[spot.id].stock}`;
             Utilities.refreshLabels();
