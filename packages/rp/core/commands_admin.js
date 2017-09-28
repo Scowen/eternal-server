@@ -51,6 +51,18 @@ mp.events.addCommand('labels', (player) => {
     Messages.adminSuccessMessage(player, "Labels have been refreshed.");
 });
 
+mp.events.addCommand('subtitle', (player, all, target, message) => {
+    if (!isAdmin(player, ranks.developer, true)) return;
+    var targetPlayer = Utilities.getPlayer(target);
+
+    if (targetPlayer == null) {
+        Messages.adminErrorMessage(player, `Target "${target}" does not exist.`);
+        return;
+    }
+
+    Utilities.showSubtitleBox(targetPlayer, all.substr(all.indexOf(' ')+1));
+});
+
 mp.events.addCommand('createdealership', (player, _, name) => {
     if (!isAdmin(player, ranks.management, true)) return;
 

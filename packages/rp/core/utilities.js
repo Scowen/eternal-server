@@ -62,6 +62,10 @@ class Utilities {
         player.call("showOptionsBox", title, subtitle);
     }
 
+    static showSubtitleBox(player, message) {
+        player.call("showSubtitleBox", message);
+    }
+
     static hideOptionsBox(player, option) {
         player.data.optionsBox = null;
         player.call("hideOptionsBox");

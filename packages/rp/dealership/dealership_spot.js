@@ -193,6 +193,7 @@ mp.events.add('clientData', function() {
             }, true);
 
             Utilities.hideOptionsBox(player);
+            Utilities.showSubtitleBox(player, `You have purchased a ${spot.name}`);
 
             dealershipSpots[spot.id].stock -= 1;
             dealerships[dealership.id].balance += spot.price;
@@ -204,7 +205,7 @@ mp.events.add('clientData', function() {
                 pos.x += 2;
                 pos.z += 1;
                 player.position = pos;
-            }, 250)
+            }, 1000)
 
             dealershipSpots[spot.id].save();
             dealerships[dealership.id].save();

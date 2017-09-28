@@ -31,9 +31,21 @@ html, body {
     min-height: 300px;
     padding: 20px;
     text-align: center;
-    background: rgba(30, 30, 30, 0.85);
+    background: rgba(30, 30, 30, 0.9);
     color: white;
     position: absolute;
     top: 20%;
+    display: none;
+}
+
+#subtitle-box {
+    width: 100%;
+    /*min-height: 300px;*/
+    padding: 5px;
+    text-align: center;
+    background: rgba(30, 30, 30, 0.9);
+    color: white;
+    position: absolute;
+    top: 0;
     display: none;
 }

@@ -41,6 +41,11 @@ mp.events.add("showBrowser", (page) => {
     });
 });
 
+mp.events.add("showSubtitleBox", (message) => {
+    if (!mainBrowser) return;
+    mainBrowser.execute(`showSubtitleBox("${message}")`);
+});
+
 mp.events.add("showOptionsBox", (title, subtitle) => {
     if (!mainBrowser) return;
     mainBrowser.execute(`showOptionsBox("${title}", "${subtitle}")`);

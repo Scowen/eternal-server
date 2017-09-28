@@ -68,6 +68,15 @@ function errorOptionsBox(message) {
     optionsDisabled = false;
 }
 
+function showSubtitleBox(message) {
+    $("#subtitle-box-message").text(message);
+
+    $("#subtitle-box").slideDown().delay(3500).queue( function(next) {
+        $("#subtitle-box").slideUp();
+        next();
+    });
+}
+
 document.addEventListener('keyup', function(e) {
     if ((e.key === 'Y' || e.keyCode === 89) && $("#option-box").is(":visible") && !optionsDisabled) {
         submitOption($("#btn-option-yes"), 1);
