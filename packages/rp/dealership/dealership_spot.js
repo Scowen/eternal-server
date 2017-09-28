@@ -6,22 +6,35 @@ class DealershipSpot {
         for (var key in values)
             this[key] = values[key];
 
-        this.position = JSON.parse(this.position);
-        let rot = JSON.parse(this.rotation);
-        this.rotation = new mp.Vector3(rot.x, rot.y, rot.z);
-        this.label = "dealership-spot-"+this.id;
+        if (this.hasOwnProperty("position")) this.position = JSON.parse(this.position);
+        if (this.hasOwnProperty("rotation")) this.rotation = JSON.parse(this.rotation);
+        this.data = {};
+        this.data.label = "dealership-spot-"+this.id;
     }
 
     save() {
-        this.position = JSON.parse(this.position);
-        this.rotation = JSON.parse(this.rotation);
+        this.last_updated = Utilities.unix();
+        let values = {};
+        for (var key in this)
+            values[key] = this[key];
+        values = Vehicle.stringify(values);
 
-        connection.query("UPDATE dealership_spot SET ? WHERE id = ?", [this, this.id], function(err, result) {
+        if (values.hasOwnProperty("data")) delete values.data;
+
+        connection.query("UPDATE dealership_spot SET ? WHERE id = ?", [values, values.id], function(err, result) {
             if (err && err != null) {
-                console.log("[Error]", "Saving Dealership Spot #" + this.id);
+                console.log("[Error]", "Saving Dealership Spot #" + values.id);
                 console.log("[Error]", err);
             }
+            console.log("[Success]", "Saved Dealership Spot #" + values.id);
         });
+    }
+
+    static stringify(values) {
+        if (values.hasOwnProperty("position")) values.position = JSON.stringify(values.position);
+        if (values.hasOwnProperty("rotation")) values.rotation = JSON.stringify(values.rotation);
+
+        return values;
     }
 
     static load() {
@@ -31,19 +44,13 @@ class DealershipSpot {
                 return;
             }
 
-            let loaded = 0;
-
             result.forEach((value, key) => {
-                if (value == null) return;
-
                 DealershipSpot.addToDealershipSpots(value.id, value);
-
-                loaded++;
             });
 
             Utilities.refreshLabels();
 
-            console.log(`[Info] ${loaded} dealership spots`);
+            console.log(`[Info] ${result.length} dealership spots`);
         });
     }
 
@@ -61,8 +68,8 @@ class DealershipSpot {
     }
 
     static addToDealershipSpots(key, value) {
-        if (dealershipSpots[key] != null && dealershipSpots[key].vehicle != null) {
-            var vehAt = mp.vehicles.at(dealershipSpots[key].vehicle);
+        if (dealershipSpots[key] != null && dealershipSpots[key].data.vehicle != null) {
+            var vehAt = mp.vehicles.at(dealershipSpots[key].data.vehicle);
             vehAt.destroy();
         }
 
@@ -74,14 +81,14 @@ class DealershipSpot {
                 veh.numberPlate = "" + key;
                 veh.setColour(spot.color1, spot.color2);
 
-                spot.vehicle = veh.id;
+                spot.data.vehicle = veh.id;
 
                 setTimeout(function() {
                     veh.rotation = spot.rotation;
                 }, 500);
             }, 1000);
 
-            labels[spot.label] = {
+            labels[spot.data.label] = {
                 text: `${spot.name}\n$${Utilities.number_format(spot.price)}\nStock: ${spot.stock}`,
                 position: spot.position,
                 r: 224,
@@ -92,8 +99,8 @@ class DealershipSpot {
                 distance: 7,
             };
         } else {
-            spot.vehicle = null;
-            labels[spot.label] = {
+            spot.data.vehicle = null;
+            labels[spot.data.label] = {
                 text: `#${spot.id}`,
                 position: spot.position,
                 r: 180,
@@ -112,8 +119,9 @@ mp.events.add('playerEnterVehicle', (player, vehicle, seat) => {
     if (dealershipSpots && dealershipSpots != null) {
         for (var key in dealershipSpots) {
             var spot = dealershipSpots[key];
-            if (spot.vehicle == vehicle.id) {
+            if (spot.data.vehicle == vehicle.id) {
                 player.call("freezeVehicle", vehicle.id, true);
+
                 player.data.currentlyInSpot = spot.id;
                 if (spot.stock > 0) {
                     Utilities.showOptionsBox(player, "buy_dealership_vehicle", 
@@ -161,31 +169,16 @@ mp.events.add('clientData', function() {
                 return;
             }
 
-/*
-            let veh = mp.vehicles.new(spot.hash, dealership.purchase_position);
-            let plate = randomString.generate(8);
-            
-
-            veh.numberPlate = "" + plate;
-            veh.setColour(spot.color1, spot.color2);
-
-            if (player.vehicle) player.removeFromVehicle();
-
-            setTimeout(function() {
-                veh.rotation = dealership.purchase_rotation;
-                player.putIntoVehicle(veh, 0);
-            }, 500);
-*/
-            let plate = randomString.generate(8);
+            let plate = randomString.generate(8).toUpperCase();
             /*
             let plateResult = connection.execute('SELECT plate FROM vehicles WHERE plate = ?', [plate]);
             while (plateResult != null && plateResult != "undefined" && plateResult._rows.length >= 1) {
-                plate = randomString.generate(8);
+                plate = randomString.generate(8).toUpperCase();
                 plateResult = connection.execute('SELECT plate FROM vehicles WHERE plate = ?', [plate]);
             }
             */
 
-            let vehId = Vehicle.insert({
+            Vehicle.insert({
                 hash: spot.hash,
                 plate: plate,
                 owner: player.character.id,
@@ -197,26 +190,20 @@ mp.events.add('clientData', function() {
                 rotation: dealership.purchase_rotation,
                 last_updated: Utilities.unix(),
                 created: Utilities.unix(),
-            });
-
-            setTimeout(function() {
-                Vehicle.load({id: vehId});
-                setTimeout(function() {
-                    player.putIntoVehicle(vehicles[vehId].entity, 0);
-                }, 500);
-            }, 500);
+            }, true);
 
             Utilities.hideOptionsBox(player);
 
             dealershipSpots[spot.id].stock -= 1;
             dealerships[dealership.id].balance += spot.price;
             player.character.bank_money -= spot.price;
+            player.removeFromVehicle();
 
+            dealershipSpots[spot.id].save();
             dealerships[dealership.id].save();
             player.character.save(player);
-            dealershipSpots[spot.id].save();
 
-            labels[spot.label].text = `${dealershipSpots[spot.id].name}\n$${Utilities.number_format(dealershipSpots[spot.id].price)}\nStock: ${dealershipSpots[spot.id].stock}`;
+            labels[spot.data.label].text = `${dealershipSpots[spot.id].name}\n$${Utilities.number_format(dealershipSpots[spot.id].price)}\nStock: ${dealershipSpots[spot.id].stock}`;
             Utilities.refreshLabels();
         }
         return;

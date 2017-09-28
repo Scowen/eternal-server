@@ -11,40 +11,42 @@ class Vehicle {
         this.rgb1 = JSON.parse(this.rgb1);
         this.rgb2 = JSON.parse(this.rgb2);
         this.neon = JSON.parse(this.neon);
+        this.entity = null;
 
         vehicles[this.id] = this;
     }
 
-    static insert(values) {
-        if (!values || values == null)
-            return;
-
+    static insert(values, loadAfterInsert) {
         values = Vehicle.stringify(values);
 
-        values.last_updated = Utilities.unix();
-        values.created = Utilities.unix();
-
-        connection.query("INSERT INTO vehicle SET ? ", [values], function(err, result) {
+        var query = connection.query("INSERT INTO vehicle SET ? ", values, function(err, result) {
             if (err && err != null) {
                 console.log("[Error]", "Inserting Vehicle");
                 console.log("[Error]", err);
                 return null;
-            } else {
-                return result.insertId;
             }
+
+            console.log("[Success]", "Inserted Vehicle " + result.insertId);
+            if (loadAfterInsert) Vehicle.loadId(result.insertId);
+            return result.insertId;
         });
     }
 
     save() {
-        let values = this;
+        this.last_updated = Utilities.unix();
+        let values = {};
+        for (var key in this)
+            values[key] = this[key];
         values = Vehicle.stringify(values);
-        values.last_updated = Utilities.unix();
+
+        if (values.hasOwnProperty("data")) delete values.data;
 
         connection.query("UPDATE vehicle SET ? WHERE id = ?", [values, this.id], function(err, result) {
             if (err && err != null) {
                 console.log("[Error]", "Saving Vehicle #" + this.id);
                 console.log("[Error]", err);
             }
+            console.log("[Success]", "Saved Vehicle #" + this.id);
         });
     }
 
@@ -60,6 +62,18 @@ class Vehicle {
         return values;
     }
 
+    static loadCharacter(id) {
+        Vehicle.load("SELECT * FROM vehicle WHERE owner = ? AND active = ? AND destroyed = ? AND for_sale = ?", [
+            id, 1, 0, 0
+        ]);
+    }
+
+    static loadId(id) {
+        Vehicle.load("SELECT * FROM vehicle WHERE id = ?", [
+            id
+        ]);
+    }
+
     static load(sql, where) {
         if (!sql) sql = "SELECT * FROM vehicle";
         connection.query(sql, where, function(err, result) {
@@ -70,29 +84,35 @@ class Vehicle {
             }
 
             result.forEach((value, key) => {
+                if (value.destroyed == false && vehicles[value.id] != null && vehicles[value.id].entity != null && !vehicles[value.id].entity.dead)
+                    return
+
                 let v = new Vehicle(value);
-                if (!v.destroyed && v.active) {
-                    let veh = mp.vehicles.new(v.hash, v.position);
-                    if (v.color1 != null && v.color2 != null)
-                        veh.setColour(v.color1, v.color2);
-                    else if (v.rgb1 != null && v.rgb2 != null)
-                        veh.setColourRGB(v.rgb1.r, v.rgb1.g, v.rgb1.b, v.rgb2.r, v.rgb2.g, v.rgb2.b);
+                if (!v.destroyed && v.active && v.position != null && v.rotation != null) {
+                    let entity = mp.vehicles.new(v.hash, v.position);
                     
-                    veh.numberPlate = v.plate;
-                    veh.databaseId = v.id;
-                    v.entity = veh;
+                    entity.locked = v.locked == 1 ? true : false;
+                    entity.numberPlate = v.plate;
+                    entity.databaseId = v.id;
+                    v.entity = entity;
+
+                    if (v.colour1 != null && v.colour2 != null)
+                        entity.setColour(v.colour1, v.colour2);
+                    else if (v.rgb1 != null && v.rgb2 != null)
+                        entity.setColourRGB(v.rgb1.r, v.rgb1.g, v.rgb1.b, v.rgb2.r, v.rgb2.g, v.rgb2.b);
 
                     setTimeout(function() {
-                        veh.rotation = v.rotation;
+                        entity.rotation = v.rotation;
 
-                        if (mods != null) {
-                        
+                        if (v.mods != null) {
+                            console.log(v.mods);
                         }
                     }, 500);
                 }
 
-                vehicles[v.hash] = v;
+                vehicles[v.id] = v;
             });
+            console.log("[Info]", `${result.length} vehicles loaded`);
         });
     }
 }

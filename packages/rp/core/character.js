@@ -33,11 +33,12 @@ class Character {
         values.armour = player.armour;
         values.last_played = Utilities.unix();
 
-        connection.query("UPDATE characters SET ? WHERE id = ?", [values, this.id], function(err, result) {
+        connection.query("UPDATE characters SET ? WHERE id = ?", [values, values.id], function(err, result) {
             if (err && err != null) {
-                console.log("[Error]", "Saving Character #" + this.id);
+                console.log("[Error]", "Saving Character #" + values.id);
                 console.log("[Error]", err);
             }
+            // console.log("[Success]", "Saved Character #" + values.id);
         });
     }
 }
