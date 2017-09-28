@@ -1,11 +1,8 @@
 //////////////////////////////// My SQL ////////////////////////////////
+var fs = require('fs');
+var databaseOptions = JSON.parse(fs.readFileSync('./packages/rp/database.json', 'utf8'));
 var mysql = require('mysql2');
-global.connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "cjdann42",
-    database: "rage"
-});
+global.connection = mysql.createConnection(databaseOptions);
 
 connection.connect(function(err) {
     if (err) {
