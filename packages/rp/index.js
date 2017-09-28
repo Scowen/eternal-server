@@ -43,20 +43,4 @@ require('./core/events.js');
 require('./core/auth.js');
 require('./core/commands.js');
 require('./core/commands_admin.js');
-
-setInterval(function() {
-    var count = 0;
-    var countSaved = 0;
-    mp.players.forEach((player, id) => {
-        if (player.character != null) {
-            try {
-                player.character.save(player);
-                countSaved++;
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        count++;
-    });
-    console.log("[Info]", `Saved Players: ${countSaved} / ${count}`);
-}, 60000)
+require('./core/saving.js');

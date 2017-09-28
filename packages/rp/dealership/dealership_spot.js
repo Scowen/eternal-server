@@ -198,6 +198,13 @@ mp.events.add('clientData', function() {
             dealerships[dealership.id].balance += spot.price;
             player.character.bank_money -= spot.price;
             player.removeFromVehicle();
+            
+            setTimeout(function() {
+                let pos = dealership.purchase_position;
+                pos.x += 2;
+                pos.z += 1;
+                player.position = pos;
+            }, 250)
 
             dealershipSpots[spot.id].save();
             dealerships[dealership.id].save();

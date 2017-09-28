@@ -11,7 +11,9 @@ class Vehicle {
         this.rgb1 = JSON.parse(this.rgb1);
         this.rgb2 = JSON.parse(this.rgb2);
         this.neon = JSON.parse(this.neon);
-        this.entity = null;
+
+        this.data = {};
+        this.data.entity = null;
 
         vehicles[this.id] = this;
     }
@@ -41,12 +43,12 @@ class Vehicle {
 
         if (values.hasOwnProperty("data")) delete values.data;
 
-        connection.query("UPDATE vehicle SET ? WHERE id = ?", [values, this.id], function(err, result) {
+        connection.query("UPDATE vehicle SET ? WHERE id = ?", [values, values.id], function(err, result) {
             if (err && err != null) {
-                console.log("[Error]", "Saving Vehicle #" + this.id);
+                console.log("[Error]", "Saving Vehicle #" + values.id);
                 console.log("[Error]", err);
             }
-            console.log("[Success]", "Saved Vehicle #" + this.id);
+            // console.log("[Success]", "Saved Vehicle #" + values.id);
         });
     }
 
@@ -94,7 +96,7 @@ class Vehicle {
                     entity.locked = v.locked == 1 ? true : false;
                     entity.numberPlate = v.plate;
                     entity.databaseId = v.id;
-                    v.entity = entity;
+                    v.data.entity = entity;
 
                     if (v.colour1 != null && v.colour2 != null)
                         entity.setColour(v.colour1, v.colour2);
