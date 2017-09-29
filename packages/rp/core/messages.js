@@ -58,6 +58,10 @@ class Messages {
         
         mp.players.broadcastInRange(player.position, 15, `!{violet}${capitalizeFirstLetter(message)} (${player.character.name})`);
     }
+
+    static subtitleMessage(player, message) {
+        Utilities.showSubtitleBox(player, message);
+    }
 }
 
 module.exports = Messages;
