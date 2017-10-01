@@ -37,9 +37,103 @@
             <h4 id="subtitle-box-message">This is a message to inform you about something important.</h4>
         </div>
 
-        <div class="row" style="display:none; padding-top: 20px; padding-left: 20px; padding-right: 20px;">
-            <div class="col-xs-4">
-                
+        <div id="dealership" class="row" style="display: block; padding-top: 20px; padding-left: 20px; padding-right: 20px;">
+            <div class="col-md-8 col-md-offset-2">  
+                    <div class="card card-hidden">
+                        <div class="card-header card-header-tabs" data-background-color="purple">
+                            <div class="nav-tabs-navigation">
+                                <div class="nav-tabs-wrapper">
+                                    <h4 class="nav-tabs-title" style="padding: 0px;">My Dealership</h4>
+                                    <ul class="nav nav-tabs" data-tabs="tabs">
+                                        <li class="pull-right">
+                                            <a href="#" id="dealership-cancel"><i class="material-icons">close</i> Close <div class='ripple-container'></div></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <ul class="nav nav-pills nav-pills-icons nav-pills-primary nav-stacked" role="tablist">
+                                        <li class="active">
+                                            <a class="dealership-tab-select" data-toggle="tab" href="#dealership-info" role="tab" aria-expanded="false">
+                                                <i class="material-icons">account_balance</i> Info
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="dealership-tab-select" data-toggle="tab" href="#dealership-order" role="tab" aria-expanded="false">
+                                                <i class="material-icons">import_export</i> Order
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="dealership-tab-select" data-toggle="tab" href="#dealership-spots" role="tab" aria-expanded="false">
+                                                <i class="material-icons">check</i> Assignment
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a class="dealership-tab-select" data-toggle="tab" href="#dealership-clothes" role="tab" aria-expanded="true">
+                                                <i class="material-icons">menu</i> Logs
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="dealership-info">
+                                            <div class="row">
+                                                <div class="col-xs-4">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Dealership Name</label>
+                                                        <input type="text" id="input-dealership-name" class="form-control disable-after-submit">
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <a href="#" class="btn btn-success">Save</a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-4">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Amount</label>
+                                                        <input type="text" id="input-dealership-balance" class="form-control disable-after-submit"> 
+                                                        <p class="hint-block">Current Balance: <span class="text-success">$</span><span id="dealership-balance">123,456</span></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <a href="#" class="btn btn-success">Deposit</a>
+                                                    <a href="#" class="btn btn-danger">Withdraw</a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-4">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">For Sale Price</label>
+                                                        <input type="text" id="input-dealership-forsale" class="form-control disable-after-submit"> 
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <a href="#" class="btn btn-success">Set For Sale</a>
+                                                    <a href="#" class="btn btn-danger">Set Not For Sale</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="tab-pane" id="dealership-order">
+
+                                        </div>
+                                        <div class="tab-pane" id="dealership-spots">
+
+                                        </div>
+                                        <div class="tab-pane" id="dealership-clothes">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

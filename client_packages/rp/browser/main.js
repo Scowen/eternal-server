@@ -71,7 +71,7 @@ function errorOptionsBox(message) {
 function showSubtitleBox(message) {
     $("#subtitle-box-message").text(message);
 
-    $("#subtitle-box").slideDown().delay(3500).queue( function(next) {
+    $("#subtitle-box").slideDown().delay(6500).queue( function(next) {
         $("#subtitle-box").slideUp();
         next();
     });
