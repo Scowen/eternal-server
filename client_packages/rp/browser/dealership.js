@@ -1,12 +1,12 @@
 var importableVehicles = [
-    {name: "T20", hash: 123456789, className: "Super", cost: "500,000"},
-    {name: "Tyrus", className: "Super", cost: "500,000"},
-    {name: "GP1", className: "Super", cost: "500,000"},
-    {name: "Nero", className: "Super", cost: "500,000"},
-    {name: "ItaliGTB", cost: "500,000"},
-    {name: "Cyclone", cost: "500,000"},
-    {name: "Tempesta", cost: "500,000"},
-    {name: "Visone", cost: "500,000"},
+    {name: "T20", hash: 123456789, className: "Super", cost: 500000},
+    {name: "Tyrus", className: "Super", cost: 500000},
+    {name: "GP1", className: "Super", cost: 500000},
+    {name: "Nero", className: "Super", cost: 500000},
+    {name: "ItaliGTB", cost: 500000},
+    {name: "Cyclone", cost: 500000},
+    {name: "Tempesta", cost: 500000},
+    {name: "Visone", cost: 500000},
 ];
 
 $(document).ready( function() {
@@ -29,11 +29,46 @@ $(document).ready( function() {
 
         if (arr && arr.length >= 1) { 
             $.each(arr, function(index, value) {
-                $(resultsElementTbody).append(`<tr><td>${value.name}</td><td>${value.className}</td><td>${value.cost}</td><td><a href="#" data-value="hash" class="text-success">SELECT</a></td></tr>`);
-            })
+                let string = `<tr><td>${value.name}</td><td>${value.className}</td><td>${number_format(value.cost)}</td>`;
+                string += `<td><a href="#" data-value="${value.hash}" class="text-success dealership-order-select">SELECT</a></td></tr>`;
+                $(resultsElementTbody).append(string);
+                
+                $(".dealership-order-select").click( function () {
+                    $("#dealership-order-form-vehicle").text(value.name);
+                    $("#dealership-order-form-class").text(value.className);
+                    $("#dealership-order-form-cost").text(number_format(value.cost));
+                    $("#dealership-order-form-total-cost").text(0);
+
+                    $("#dealership-order-form-submit")
+                        .attr("data-hash", value.hash)
+                        .attr("data-quantity", 0)
+                        .attr("data-cost", value.cost);
+
+                    $("#dealership-order-vehicle-results").hide();
+                    $("#dealership-order-search").fadeOut(350, function() {
+                        $("#dealership-order-form").fadeIn();
+                    });
+                })
+            });
+
             $(resultsElement).slideDown();
         } else {
             $(resultsElement).find("tbody").html(`<tr><td>No vehicles found containing: <strong>${val}</strong></td></tr>`).slideDown();
         }
+    });
+
+    $("#input-dealership-order-form-quantity").keyup( function() {
+        var val = parseInt($(this).val());
+
+        if (val == null || val == "undefined")
+            val = 0;
+
+        let btn = $("#dealership-order-form-submit");
+
+        let cost = $(btn).attr("data-cost");
+        cost = parseInt(cost);
+
+        let total = val * cost;
+        $("#dealership-order-form-total-cost").text(number_format(total));
     })
 })
