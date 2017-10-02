@@ -40,7 +40,7 @@
         <div id="dealership" class="row" style="display: block; padding-top: 20px; padding-left: 20px; padding-right: 20px;">
             <div class="col-md-8 col-md-offset-2">  
                     <div class="card card-hidden">
-                        <div class="card-header card-header-tabs" data-background-color="purple">
+                        <div class="card-header card-header-tabs" data-background-color="rose">
                             <div class="nav-tabs-navigation">
                                 <div class="nav-tabs-wrapper">
                                     <h4 class="nav-tabs-title" style="padding: 0px;">My Dealership</h4>
@@ -53,17 +53,17 @@
                             </div>
                         </div>
                         <div class="card-content">
-                            <div class="row">
+                            <div class="row" id="dealership-container" style="height: 476px; overflow-y: auto">
                                 <div class="col-md-2">
-                                    <ul class="nav nav-pills nav-pills-icons nav-pills-primary nav-stacked" role="tablist">
+                                    <ul class="nav nav-pills nav-pills-icons nav-pills-rose nav-stacked" role="tablist">
                                         <li class="active">
-                                            <a class="dealership-tab-select" data-toggle="tab" href="#dealership-info" role="tab" aria-expanded="false">
+                                            <a class="dealership-tab-select" data-toggle="tab" href="#dealership-info" role="tab" aria-expanded="true">
                                                 <i class="material-icons">account_balance</i> Info
                                             </a>
                                         </li>
                                         <li class="">
                                             <a class="dealership-tab-select" data-toggle="tab" href="#dealership-order" role="tab" aria-expanded="false">
-                                                <i class="material-icons">import_export</i> Order
+                                                <i class="material-icons">import_export</i> Inventory
                                             </a>
                                         </li>
                                         <li class="">
@@ -72,7 +72,7 @@
                                             </a>
                                         </li>
                                         <li class="">
-                                            <a class="dealership-tab-select" data-toggle="tab" href="#dealership-clothes" role="tab" aria-expanded="true">
+                                            <a class="dealership-tab-select" data-toggle="tab" href="#dealership-clothes" role="tab" aria-expanded="false">
                                                 <i class="material-icons">menu</i> Logs
                                             </a>
                                         </li>
@@ -82,13 +82,17 @@
                                     <div class="tab-content">
                                         <div class="tab-pane active" id="dealership-info">
                                             <div class="row">
+                                                <div class="col-xs-12"><h3>Information</h3></div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-xs-4">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">Dealership Name</label>
                                                         <input type="text" id="input-dealership-name" class="form-control disable-after-submit">
+                                                        <p class="hint-block">Current Name: <span id="dealership-name">Motorsport</span></p>
                                                     </div>
                                                 </div>
-                                                <div class="col-xs-6">
+                                                <div class="col-xs-8">
                                                     <a href="#" class="btn btn-success">Save</a>
                                                 </div>
                                             </div>
@@ -100,7 +104,7 @@
                                                         <p class="hint-block">Current Balance: <span class="text-success">$</span><span id="dealership-balance">123,456</span></p>
                                                     </div>
                                                 </div>
-                                                <div class="col-xs-6">
+                                                <div class="col-xs-8">
                                                     <a href="#" class="btn btn-success">Deposit</a>
                                                     <a href="#" class="btn btn-danger">Withdraw</a>
                                                 </div>
@@ -110,20 +114,101 @@
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">For Sale Price</label>
                                                         <input type="text" id="input-dealership-forsale" class="form-control disable-after-submit"> 
+                                                        <p class="hint-block">Status: <span id="dealership-forsale">Not For Sale</span></p>
                                                     </div>
                                                 </div>
-                                                <div class="col-xs-6">
+                                                <div class="col-xs-8">
                                                     <a href="#" class="btn btn-success">Set For Sale</a>
                                                     <a href="#" class="btn btn-danger">Set Not For Sale</a>
                                                 </div>
                                             </div>
                                         </div>
-                                        </div>
                                         <div class="tab-pane" id="dealership-order">
-
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12"><h3>Pending Orders</h3></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <table class="table table-striped">
+                                                                <thead>
+                                                                    <th>Vehicle</th>
+                                                                    <th>Quantity</th>
+                                                                    <th>Cost</th>
+                                                                    <th>Status</th>
+                                                                </thead>
+                                                                <tbody id="dealership-orders">
+                                                                    <tr id="dealership-order-template">
+                                                                        <td>T20</td>
+                                                                        <td>4</td>
+                                                                        <td>$3.5m</td>
+                                                                        <td>Awaiting Dispatch</td>
+                                                                    </tr>                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-xs-12"><h3>Order Stock</h3></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label">Vehicle Name / Hash</label>
+                                                                <input type="text" id="input-dealership-order-vehicle" class="form-control disable-after-submit"> 
+                                                                <div id="dealership-order-vehicle-results">
+                                                                    <table class="table table-striped">
+                                                                        <tbody id="dealership-order-vehicle-results-tbody">
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="tab-pane" id="dealership-spots">
-
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <div class="row">
+                                                        <div class="col-xs-12"><h3>Spot Assignment</h3></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <table class="table table-striped">
+                                                                <thead>
+                                                                    <th>#</th>
+                                                                    <th>Vehicle</th>
+                                                                    <th>Stock</th>
+                                                                </thead>
+                                                                <tbody id="dealership-spots">
+                                                                    <tr id="dealership-spot-template">
+                                                                        <td>#1</td>
+                                                                        <td>
+                                                                            <select class="dealership-spot-assignment">
+                                                                                <option value="0">Empty</option>
+                                                                            </select>
+                                                                        </td>
+                                                                        <td>0</td>
+                                                                    </tr>                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="row">
+                                                        <div class="col-xs-12"><h3>Stock</h3></div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="tab-pane" id="dealership-clothes">
 
@@ -138,6 +223,7 @@
         </div>
 
         <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript" src="dealership.js"></script>
     
     </body>
 </html>
