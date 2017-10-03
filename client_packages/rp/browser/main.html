@@ -38,7 +38,7 @@
             <h4 id="subtitle-box-message">This is a message to inform you about something important.</h4>
         </div>
 
-        <div id="dealership" class="row" style="display: block; padding-top: 20px; padding-left: 20px; padding-right: 20px;">
+        <div id="dealership" class="row ui-window" style="display: block; padding-top: 20px; padding-left: 20px; padding-right: 20px;">
             <div class="col-md-8 col-md-offset-2">  
                     <div class="card card-hidden">
                         <div class="card-header card-header-tabs" data-background-color="jade">
@@ -47,7 +47,7 @@
                                     <h4 class="nav-tabs-title" style="padding: 0px;">My Dealership</h4>
                                     <ul class="nav nav-tabs" data-tabs="tabs">
                                         <li class="pull-right">
-                                            <a href="#" id="dealership-cancel"><i class="material-icons">close</i> Close <div class='ripple-container'></div></a>
+                                            <a href="#" class="btn-close-ui-window" id="dealership-cancel"><i class="material-icons">close</i> Close <div class='ripple-container'></div></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -73,7 +73,7 @@
                                             </a>
                                         </li>
                                         <li class="">
-                                            <a class="dealership-tab-select" data-toggle="tab" href="#dealership-clothes" role="tab" aria-expanded="false">
+                                            <a class="dealership-tab-select" data-toggle="tab" href="#dealership-logs" role="tab" aria-expanded="false">
                                                 <i class="material-icons">menu</i> Logs
                                             </a>
                                         </li>
@@ -250,13 +250,46 @@
                                                 </div>
                                                 <div class="col-xs-4">
                                                     <div class="row">
-                                                        <div class="col-xs-12"><h3>Stock</h3></div>
+                                                        <div class="col-xs-12"><h3>Unasigned Stock</h3></div>
+                                                    </div>
+                                                     <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <table class="table table-striped">
+                                                                <thead>
+                                                                    <th>Vehicle</th>
+                                                                    <th>Stock</th>
+                                                                </thead>
+                                                                <tbody id="dealership-stocks">
+                                                                    <tr id="dealership-stock-template">
+                                                                        <td>T20</td>
+                                                                        <td>6</td>
+                                                                    </tr>                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="dealership-clothes">
-
+                                        <div class="tab-pane" id="dealership-logs">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <th>Name</th>
+                                                            <th>Action</th>
+                                                            <th>Date</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id="dealership-stock-template">
+                                                                <td>Luke_Lost</td>
+                                                                <td>Bought 4 T20's for $3,500,000</td>
+                                                                <td>03/10/2017 12:10
+                                                            </tr>      
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

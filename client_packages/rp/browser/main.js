@@ -8,6 +8,10 @@ $(document).ready( function() {
         var value = $(this).attr("data-value");
         submitOption($(this), value);
     })
+
+    $(".btn-close-ui-window").click(function() {
+        closeAllWindows();
+    })
 })
 
 function submitOption(element, value) {
@@ -69,12 +73,16 @@ function errorOptionsBox(message) {
 }
 
 function showSubtitleBox(message) {
-    $("#subtitle-box-message").text(message);
+    $("#subtitle-box-message").html(message);
 
     $("#subtitle-box").slideDown().delay(5000).queue( function(next) {
         $("#subtitle-box").slideUp();
         next();
     });
+}
+
+function closeAllWindows() {
+    $(".ui-window").fadeOut();
 }
 
 document.addEventListener('keyup', function(e) {
@@ -84,6 +92,10 @@ document.addEventListener('keyup', function(e) {
 
     if ((e.key === 'N' || e.keyCode === 78) && $("#option-box").is(":visible") && !optionsDisabled) {
         submitOption($("#btn-option-no"), 0);
+    }
+
+    if ((e.key === 'Esc' || e.keyCode === 27)) {
+        closeAllWindows();
     }
 
     if (e.key === 'F2' || e.keyCode === 113) {

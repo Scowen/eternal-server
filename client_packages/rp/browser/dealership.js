@@ -1,4 +1,4 @@
-var importableVehicles = [
+var vehicleInfo = [
     {name: "T20", hash: 123456789, className: "Super", cost: 500000},
     {name: "Tyrus", className: "Super", cost: 500000},
     {name: "GP1", className: "Super", cost: 500000},
@@ -8,6 +8,20 @@ var importableVehicles = [
     {name: "Tempesta", cost: 500000},
     {name: "Visone", cost: 500000},
 ];
+
+function loadDealership(values) {
+    try {
+        let json = JSON.parse(values);
+    } catch (exc) {
+        showSubtitleBox(`Error loading data. <br /><br />${exc}`);
+        return;
+    }
+
+    if (!json || json == null || !typeof json == "object") {
+        showSubtitleBox(`Error loading data. <br /><br />${values}`);
+        return;
+    }
+}
 
 $(document).ready( function() {
     $("#input-dealership-order-vehicle").keyup( function () {
@@ -21,7 +35,7 @@ $(document).ready( function() {
             return;
 
         var search = new RegExp(val, "i");
-        var arr = jQuery.grep(importableVehicles, function (value) {
+        var arr = jQuery.grep(vehicleInfo, function (value) {
             if (search.test(value.name)) return search.test(value.name);
             if (search.test(value.hash)) return search.test(value.hash);
             if (search.test(value.className)) return search.test(value.className);
@@ -71,4 +85,17 @@ $(document).ready( function() {
         let total = val * cost;
         $("#dealership-order-form-total-cost").text(number_format(total));
     })
+
+    $("#dealership-order-form-submit").click( function() {
+        $(".disable-after-submit").addClass("disabled").attr("readonly", true);
+        $(this).text("Ordering...");
+    })
+
+    $("#dealership-order-form-cancel").click( function() {
+        $(".disable-after-submit").removeClass("disabled").attr("readonly", false);
+        $("#input-dealership-order-vehicle").val("");
+        $("#dealership-order-form").fadeOut(350, function() {
+            $("#dealership-order-search").fadeIn();
+        });
+    });
 })
