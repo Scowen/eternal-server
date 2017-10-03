@@ -11,18 +11,27 @@ var ranks = {
 }
 
 function isAdmin(player, level, duty) {
-    return true;
-
     if (player.account.admin < level) {
         Messages.errorMessage(player, "Insufficient Permissions!");
-        return false
+        return false;
     }
 
     if (duty && !player.character.data.adminDuty) {
         Messages.adminErrorMessage(player, "You must be on duty to use this command!");
-        return false
+        return false;
     }
+
+    return true;
 }
+
+mp.events.addCommand('aduty', (player) => {
+    player.character.data.adminDuty = !player.character.data.adminDuty;
+    if (player.character.data.adminDuty) {
+        Messages.adminSuccessMessage(player, "You are now !{green}ON!{white} DUTY.");
+    } else {
+        Messages.adminSuccessMessage(player, "You are now !{red}OFF!{white} DUTY.");
+    }
+});
 
 mp.events.addCommand('pos', (player) => {
     if (!isAdmin(player, ranks.trialAdmin, true)) return;
@@ -259,11 +268,6 @@ mp.events.addCommand('flip', (player) => {
 
 mp.events.addCommand('weapon', (player, _, weaponName) => {
     if (!isAdmin(player, ranks.seniorAdmin, true)) return;
-
-    if (weaponName.trim().length <= 0) {
-        Messages.adminErrorMessage(player, `Please enter a valid weapon name.`);
-        return;
-    }
 
     player.giveWeapon(mp.joaat(`weapon_${weaponName}`), 100);
     Messages.adminSuccessMessage(player, `You spawned a ${weaponName}.`);

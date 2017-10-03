@@ -3,6 +3,9 @@ class Character {
         if (values && values != null)
             for (var key in values)
                 this[key] = values[key];
+
+        this.data = {};
+        this.data.adminDuty = false;
     }
 
     insert(values) {
@@ -25,7 +28,11 @@ class Character {
     }
 
     save(player) {
-        let values = this;
+        let values = {};
+        for (var key in this)
+            values[key] = this[key];
+
+        if (values.hasOwnProperty("data")) delete values.data;
 
         values.position = JSON.stringify(player.position);
         values.heading = player.heading;

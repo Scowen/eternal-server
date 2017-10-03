@@ -193,7 +193,7 @@ mp.events.add('clientData', function() {
             }, true);
 
             Utilities.hideOptionsBox(player);
-            Messages.sendSubtitle(player, `You have purchased a ${spot.name}`);
+            Messages.subtitleMessage(player, `You have purchased a ${spot.name}`);
 
             dealershipSpots[spot.id].stock -= 1;
             dealerships[dealership.id].balance += spot.price;

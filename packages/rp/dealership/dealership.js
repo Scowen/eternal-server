@@ -60,6 +60,7 @@ class Dealership {
 
                 // mp.markers.new(type, position, rotation, direction, radius, red, green, blue, alpha[, visible, dimension])
                 dealership.data.marker = mp.markers.new(0, dealership.position, rotation, rotation, 1, 0, 176, 255, 255, true, 0);
+                dealership.data.colshape = mp.colshapes.newSphere(dealership.position.x, dealership.position.y, dealership.position.z, 5);
                 dealerships[dealership.id] = dealership;
 
                 labels[dealership.data.label] = {
@@ -79,6 +80,49 @@ class Dealership {
             console.log(`[Info] ${result.length} dealerships loaded`);
         });
     }
+
+    getSpots() {
+        connection.query("SELECT * FROM dealership_spot WHERE dealership = ?", [this.id], function(err, result) {
+            if (err || !result || result == null || result.length <= 0) {
+                console.log("[Error] Error loading dealership spots for dealership " + this.id);
+                return null;
+            }
+
+            return result;
+        });
+    }
 }
+
+mp.events.add('clientData', function() {
+    let player = arguments[0];
+    let args = JSON.parse(arguments[1]);
+
+    if (args[0] == "action") {
+        for (let id in dealerships) {
+            let dealership = dealerships[id];
+
+            if (dealership == null || dealership == "undefined") return;
+            if (!dealership.data.colshape.isPointWithin(player.position)) return;
+            console.log(dealership.owner, player.character.id, player.account.admin, player.character.data.adminDuty);
+            if (dealership.owner != player.character.id && !(player.account.admin >= 7 && player.character.data.adminDuty)) return;
+
+            let objectToSend = {
+                name: dealership.name,
+                balance: dealership.balance,
+                for_sale: dealership.for_sale,
+                for_sale_price: dealership.for_sale_price,
+                spots: dealership.getSpots(),
+                orders: {},
+                stock: dealership.stock,
+                logs: dealership.logs,
+            }
+
+            let jsonToSend = JSON.stringify(objectToSend);
+
+            player.call("showUiWindow", "dealership");
+            player.call("loadDealership", jsonToSend);
+        }
+    }
+});
 
 module.exports = Dealership;

@@ -15,7 +15,7 @@ function loadCharacters(chars) {
                 `<td>${char.identifier}</td>` +
                 `<td>${char.name}</td>` + 
                 "<td>$" + char.money + "</td>" + 
-                `<td><a href="#" class="btn btn-simple btn-info select-character" style="cursor:pointer" data-id="${char.identifier}">Select<div class="ripple-container"></div></a></td>` +
+                `<td><a href="#" class="btn btn-simple btn-jade select-character" style="cursor:pointer" data-id="${char.identifier}">Select<div class="ripple-container"></div></a></td>` +
                 "</tr>";
 
             $(tbody).append(string);

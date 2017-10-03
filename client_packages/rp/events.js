@@ -1,4 +1,4 @@
-exports = function(menu) {
+exports = function(browser) {
     mp.events.add('cefData', function() {
         mp.events.callRemote('clientData', JSON.stringify(arguments));
     });

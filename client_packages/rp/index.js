@@ -36,9 +36,16 @@ mp.events.add("showBrowser", (page) => {
 
     mp.events.add('browserDomReady', (browser) => {
         if (browser == mainBrowser) {
-            require('rp/events.js')(mainBrowser);
+            showUI();
+            // require('rp/events.js')(mainBrowser);
         }
     });
+});
+
+mp.events.add("showUiWindow", (target) => {
+    if (!mainBrowser) return;
+    mp.invoke('focus', true);
+    mainBrowser.execute(`showUiWindow("${target}")`);
 });
 
 mp.events.add("showSubtitleBox", (message) => {

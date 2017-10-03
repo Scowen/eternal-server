@@ -1,8 +1,9 @@
 {
-	"maxplayers" : 100,
-	"name" : "RAGE:MP Unofficial server", 
-	"gamemode" : "freeroam", 
-	"streamdistance" : 500.0,
-	"announce" : false,
-	"port": 22005
+	"announce" : true,
+    "gamemode" : "roleplay", 
+    "maxplayers" : 200,
+    "name" : "Development", 
+    "streamdistance" : 500.0,
+	"port": 22005,
+    "language": "en"
 }

@@ -85,6 +85,10 @@ function closeAllWindows() {
     $(".ui-window").fadeOut();
 }
 
+function showUiWindow(target) {
+    $("#" + target).fadeIn();
+}
+
 document.addEventListener('keyup', function(e) {
     if ((e.key === 'Y' || e.keyCode === 89) && $("#option-box").is(":visible") && !optionsDisabled) {
         submitOption($("#btn-option-yes"), 1);
@@ -96,6 +100,10 @@ document.addEventListener('keyup', function(e) {
 
     if ((e.key === 'Esc' || e.keyCode === 27)) {
         closeAllWindows();
+    }
+
+    if ((e.key === 'E' || e.keyCode === 69) && $(".ui-window").is(":visible") == false) {
+        mp.trigger('cefData', 'action');
     }
 
     if (e.key === 'F2' || e.keyCode === 113) {
