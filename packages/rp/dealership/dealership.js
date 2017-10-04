@@ -82,14 +82,16 @@ class Dealership {
     }
 
     getSpots() {
-        connection.query("SELECT * FROM dealership_spot WHERE dealership = ?", [this.id], function(err, result) {
-            if (err || !result || result == null || result.length <= 0) {
-                console.log("[Error] Error loading dealership spots for dealership " + this.id);
-                return null;
-            }
+        let spots = {};
 
-            return result;
-        });
+        for (let id in dealershipSpots) {
+            let spot = dealershipSpots[id];
+
+            if (spot.dealership == this.id)
+                spots[id] = spot;
+        }
+
+        return spots;
     }
 }
 
@@ -103,7 +105,6 @@ mp.events.add('clientData', function() {
 
             if (dealership == null || dealership == "undefined") return;
             if (!dealership.data.colshape.isPointWithin(player.position)) return;
-            console.log(dealership.owner, player.character.id, player.account.admin, player.character.data.adminDuty);
             if (dealership.owner != player.character.id && !(player.account.admin >= 7 && player.character.data.adminDuty)) return;
 
             let objectToSend = {
@@ -118,6 +119,8 @@ mp.events.add('clientData', function() {
             }
 
             let jsonToSend = JSON.stringify(objectToSend);
+
+            console.log(jsonToSend);
 
             player.call("showUiWindow", "dealership");
             player.call("loadDealership", jsonToSend);

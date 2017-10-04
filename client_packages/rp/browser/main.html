@@ -118,8 +118,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-8">
-                                                    <a href="#" class="btn btn-success">Set For Sale</a>
-                                                    <a href="#" class="btn btn-danger">Set Not For Sale</a>
+                                                    <a href="#" id="btn-dealership-set-for-sale" class="btn btn-success">Set For Sale</a>
+                                                    <a href="#" id="btn-dealership-set-not-for-sale" class="btn btn-danger">Set Not For Sale</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -131,19 +131,19 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-xs-12">
-                                                            <table class="table table-striped">
+                                                            <table class="table table-striped" style="table-layout: fixed;">
                                                                 <thead>
                                                                     <th>Vehicle</th>
                                                                     <th>Quantity</th>
                                                                     <th>Cost</th>
                                                                     <th>Status</th>
                                                                 </thead>
-                                                                <tbody id="dealership-orders">
-                                                                    <tr id="dealership-order-template">
-                                                                        <td>T20</td>
-                                                                        <td>4</td>
-                                                                        <td>$3.5m</td>
-                                                                        <td>Awaiting Dispatch</td>
+                                                                <tbody id="dealership-orders-tbody">
+                                                                    <tr id="dealership-order-template" style="display: none">
+                                                                        <td class="t-name">T20</td>
+                                                                        <td class="t-quantity">4</td>
+                                                                        <td class="t-cost">$3.5m</td>
+                                                                        <td class="t-status">Awaiting Dispatch</td>
                                                                     </tr>                                                                    
                                                                 </tbody>
                                                             </table>
@@ -162,14 +162,14 @@
                                                                 <label class="control-label">Vehicle Name / Hash / Class</label>
                                                                 <input type="text" id="input-dealership-order-vehicle" class="form-control disable-after-submit"> 
                                                                 <div id="dealership-order-vehicle-results">
-                                                                    <table class="table table-striped">
+                                                                    <table class="table table-striped" style="table-layout: fixed;">
                                                                         <thead>
                                                                             <th>Vehicle</th>
                                                                             <th>Class</th>
                                                                             <th>Cost</th>
                                                                             <th>&nbsp;</th>
                                                                         </thead>
-                                                                        <tbody id="dealership-order-vehicle-results-tbody">
+                                                                        <tbody id="dealership-order-vehicle-results-tbody-tbody">
                                                                             
                                                                         </tbody>
                                                                     </table>
@@ -218,50 +218,50 @@
                                         </div>
                                         <div class="tab-pane" id="dealership-spots">
                                             <div class="row">
-                                                <div class="col-xs-8">
+                                                <div class="col-xs-9">
                                                     <div class="row">
                                                         <div class="col-xs-12"><h3>Spot Assignment</h3></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-xs-12">
-                                                            <table class="table table-striped">
+                                                            <table class="table table-striped" style="table-layout: fixed;">
                                                                 <thead>
                                                                     <th>#</th>
                                                                     <th>Vehicle</th>
                                                                     <th>Price</th>
                                                                     <th>Stock</th>
+                                                                    <th>&nbsp;</th>
                                                                 </thead>
-                                                                <tbody id="dealership-spots">
-                                                                    <tr id="dealership-spot-template">
-                                                                        <td>#1</td>
-                                                                        <td>
-                                                                            <select class="form-control dealership-spot-assignment">
-                                                                                <option value="0">Empty</option>
-                                                                            </select>
+                                                                <tbody id="dealership-spots-tbody">
+                                                                    <tr id="dealership-spot-template" style="display: none">
+                                                                        <td class="t-id">#1</td>
+                                                                        <td class="t-vehicle">
+                                                                            Selection
                                                                         </td>
-                                                                        <td><input type="number" class="form-control dealership-spot-price"></td>
-                                                                        <td>0</td>
+                                                                        <td class="t-price"><input type="number" class="form-control dealership-spot-price"></td>
+                                                                        <td class="t-stock">0</td>
+                                                                        <td><a href="#" class="btn btn-simple btn-jade btn-sm btn-dealership-spot-submit" data-id="0">Save</a></td>
                                                                     </tr>                                                                    
                                                                 </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-xs-4">
+                                                <div class="col-xs-3">
                                                     <div class="row">
-                                                        <div class="col-xs-12"><h3>Unasigned Stock</h3></div>
+                                                        <div class="col-xs-12"><h3>Unassigned Stock</h3></div>
                                                     </div>
                                                      <div class="row">
                                                         <div class="col-xs-12">
-                                                            <table class="table table-striped">
+                                                            <table class="table table-striped" style="table-layout: fixed;">
                                                                 <thead>
                                                                     <th>Vehicle</th>
                                                                     <th>Stock</th>
                                                                 </thead>
-                                                                <tbody id="dealership-stocks">
-                                                                    <tr id="dealership-stock-template">
-                                                                        <td>T20</td>
-                                                                        <td>6</td>
+                                                                <tbody id="dealership-stocks-tbody">
+                                                                    <tr id="dealership-stock-template" style="display: none">
+                                                                        <td class="t-name">T20</td>
+                                                                        <td class="t-stock">6</td>
                                                                     </tr>                                                                    
                                                                 </tbody>
                                                             </table>
@@ -273,17 +273,17 @@
                                         <div class="tab-pane" id="dealership-logs">
                                             <div class="row">
                                                 <div class="col-xs-12">
-                                                    <table class="table table-striped">
+                                                    <table class="table table-striped" style="table-layout: fixed;">
                                                         <thead>
                                                             <th>Name</th>
                                                             <th>Action</th>
                                                             <th>Date</th>
                                                         </thead>
-                                                        <tbody>
-                                                            <tr id="dealership-stock-template">
-                                                                <td>Luke_Lost</td>
-                                                                <td>Bought 4 T20's for $3,500,000</td>
-                                                                <td>03/10/2017 12:10
+                                                        <tbody id="dealership-logs-tbody">
+                                                            <tr id="dealership-log-template" style="display: none">
+                                                                <td class="t-name">Luke_Lost</td>
+                                                                <td class="t-action">Bought 4 T20's for $3,500,000</td>
+                                                                <td class="t-date">03/10/2017 12:10</td>
                                                             </tr>      
                                                         </tbody>
                                                     </table>

@@ -1,5 +1,5 @@
 {
-	"announce" : true,
+	"announce" : false,
     "gamemode" : "roleplay", 
     "maxplayers" : 200,
     "name" : "Development", 

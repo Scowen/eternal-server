@@ -44,7 +44,6 @@ mp.events.add("showBrowser", (page) => {
 
 mp.events.add("showUiWindow", (target) => {
     if (!mainBrowser) return;
-    mp.invoke('focus', true);
     mainBrowser.execute(`showUiWindow("${target}")`);
 });
 

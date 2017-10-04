@@ -10,8 +10,9 @@ var vehicleInfo = [
 ];
 
 function loadDealership(values) {
+    let json = null;
     try {
-        let json = JSON.parse(values);
+        json = JSON.parse(values);
     } catch (exc) {
         showSubtitleBox(`Error loading data. <br /><br />${exc}`);
         return;
@@ -21,6 +22,72 @@ function loadDealership(values) {
         showSubtitleBox(`Error loading data. <br /><br />${values}`);
         return;
     }
+
+    cursor = true;
+    // mp.invoke('focus', true);
+
+    $("#dealership-name").text(json.name);
+    $("#dealership-balance").text(number_format(json.balance));
+    if (json.for_sale) {
+        $("#btn-dealership-set-for-sale").hide();
+        $("#btn-dealership-set-not-for-sale").show();
+        $("#dealership-forsale").text("For Sale");
+    } else {
+        $("#btn-dealership-set-for-sale").show();
+        $("#btn-dealership-set-not-for-sale").hide();
+        $("#dealership-forsale").text("Not For Sale");
+    }
+
+    if (json.orders != null) {
+        $.each(json.orders, function(index, value) {
+            let template = $("#dealership-order-template").clone();
+            $(template).find(".t-name").text(value.vehicle_name);
+            $(template).find(".t-quantity").text(value.quantity);
+            $(template).find(".t-cost").text(value.cost);
+            $(template).find(".t-status").text(value.status);
+            $(template).attr("id", "dealership-order-" + value.id);
+            $("#dealership-orders-tbody").append(template);
+            $(template).show();
+        })
+    }
+
+    if (json.spots != null) {
+        $.each(json.spots, function(index, value) {
+            let template = $("#dealership-spot-template").clone();
+            $(template).find(".t-id").text("#" + value.id);
+            $(template).find(".t-vehicle").text(value.name);
+            $(template).find(".t-price input").val(value.price);
+            $(template).find(".t-stock").text(value.stock);
+            $(template).find(".btn-dealership-spot-submit").attr("data-id", value.id);
+            $(template).attr("id", "dealership-spot-" + value.id);
+            $("#dealership-spots-tbody").append(template);
+            $(template).show();
+        })
+    }
+
+    if (json.stock != null) {
+        $.each(json.stock, function(index, value) {
+            let template = $("#dealership-stock-template").clone();
+            $(template).find(".t-name").text(value.name);
+            $(template).find(".t-stock").text(value.stock);
+            $(template).attr("id", "dealership-stock-" + value.id);
+            $("#dealership-stocks-tbody").append(template);
+            $(template).show();
+        })
+    }
+
+    if (json.logs != null) {
+        $.each(json.log, function(index, value) {
+            let template = $("#dealership-log-template").clone();
+            $(template).find(".t-name").text(value.name);
+            $(template).find(".t-action").text(value.action);
+            $(template).find(".t-date").text(value.date);
+            $(template).attr("id", "dealership-log-" + value.id);
+            $("#dealership-logs-tbody").append(template);
+            $(template).show();
+        })
+    }
+
 }
 
 $(document).ready( function() {
