@@ -83,10 +83,14 @@ function showSubtitleBox(message) {
 
 function closeAllWindows() {
     $(".ui-window").fadeOut();
+    cursor = false;
+    mp.invoke('focus', false);
 }
 
 function showUiWindow(target) {
     $("#" + target).fadeIn();
+    cursor = true;
+    mp.invoke('focus', true);
 }
 
 document.addEventListener('keyup', function(e) {

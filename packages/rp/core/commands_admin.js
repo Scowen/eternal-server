@@ -197,6 +197,9 @@ mp.events.addCommand('revive', (player) => {
 
     player.health = 100;
     
+    if (player.vehicle)
+        player.removeFromVehicle();
+
     let position = player.position;
     position.z += 2;
     player.position = position;
@@ -334,4 +337,35 @@ mp.events.addCommand('tppos', (player, _, x, y ,z) => {
     } else {
         player.outputChatBox(`<b>Command syntax:</b> /tp [x] [y] [z]`);
     }
+});
+
+mp.events.addCommand('mod', (player, _, type, index) => {
+    if (!isAdmin(player, ranks.seniorAdmin, true)) return;
+
+    if (!player.vehicle) {
+        Messages.adminErrorMessage(player, `You must be in a vehicle to use this command.`);
+        return;
+    }
+
+    player.vehicle.setMod(parseInt(type), parseInt(index));
+
+    Messages.adminSuccessMessage(player, `You have applied mod type !{yellow}${type}!{white} - !{green}${index}!{white} to this vehicle.`);
+});
+
+mp.events.addCommand('modperf', (player) => {
+    if (!isAdmin(player, ranks.seniorAdmin, true)) return;
+
+    if (!player.vehicle) {
+        Messages.adminErrorMessage(player, `You must be in a vehicle to use this command.`);
+        return;
+    }
+
+    player.vehicle.setMod(0, 1);
+    player.vehicle.setMod(11, 3);
+    player.vehicle.setMod(12, 2);
+    player.vehicle.setMod(13, 2);
+    player.vehicle.setMod(15, 3);
+    player.vehicle.setMod(18, 1);
+
+    Messages.adminSuccessMessage(player, `You have applied maximum performance modifications to this vehicle.`);
 });

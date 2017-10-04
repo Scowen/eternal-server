@@ -10,19 +10,20 @@ var vehicleInfo = [
 ];
 
 function loadDealership(values) {
-    let json = null;
+    let json = values;
+    /*
     try {
         json = JSON.parse(values);
     } catch (exc) {
-        showSubtitleBox(`Error loading data. <br /><br />${exc}`);
+        showSubtitleBox(`Error parsing data. <br /><br />${exc}`);
         return;
     }
+    */
 
     if (!json || json == null || !typeof json == "object") {
         showSubtitleBox(`Error loading data. <br /><br />${values}`);
         return;
     }
-
     cursor = true;
     // mp.invoke('focus', true);
 

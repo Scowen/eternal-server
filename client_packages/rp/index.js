@@ -47,6 +47,11 @@ mp.events.add("showUiWindow", (target) => {
     mainBrowser.execute(`showUiWindow("${target}")`);
 });
 
+mp.events.add("loadDealership", (json) => {
+    if (!mainBrowser) return;
+    mainBrowser.execute(`loadDealership(${json})`);
+});
+
 mp.events.add("showSubtitleBox", (message) => {
     if (!mainBrowser) return;
     mainBrowser.execute(`showSubtitleBox("${message}")`);
