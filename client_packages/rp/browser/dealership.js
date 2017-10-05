@@ -59,6 +59,8 @@ function loadDealership(values) {
             $(template).find(".t-vehicle").text(value.name);
             $(template).find(".t-price input").val(value.price);
             $(template).find(".t-stock").text(value.stock);
+            $(template).find(".t-colour-1").text(value.color1);
+            $(template).find(".t-colour-2").text(value.color2);
             $(template).find(".btn-dealership-spot-submit").attr("data-id", value.id);
             $(template).attr("id", "dealership-spot-" + value.id);
             $("#dealership-spots-tbody").append(template);
